@@ -8,6 +8,26 @@
 
 namespace basecross{
 
+	class Test : public GameObject
+	{
+	public:
+		//-- \’z --
+		Test(const shared_ptr<Stage>& StagePtr);
 
+		//-- ”jŠü --
+		virtual ~Test() {}
+
+		//-- ‰Šú‰» --
+		void OnCreate()override;
+
+		//-- XVˆ— --
+		void OnUpdate()override;
+
+		void OnDestroy()override;
+
+	private:
+		bool m_cosole;
+		lua_State *m_state;
+	};
 }
 //end basecross

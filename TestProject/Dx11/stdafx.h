@@ -84,6 +84,7 @@ using namespace std;
 // XInput includes
 #include <xinput.h>
 
+#include <lua.hpp>
 
 #pragma comment( lib, "d3d11.lib" )
 #pragma comment( lib, "d2d1.lib" )
