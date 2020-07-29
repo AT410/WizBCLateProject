@@ -24,19 +24,25 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DxShaders", "..\Libs\BaseLi
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameSources", "GameSources\GameSources.vcxitems", "{8C1D084C-C178-4A5D-84D5-9D8B94E39AB0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExtendLibs", "ExtendLibs", "{AE4A2F45-D1CA-4204-B84A-A5B7BD123C37}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImGui", "..\Libs\ExtendLibs\ImGui\ImGui.vcxitems", "{A63F489A-DC0C-4494-8AFC-BE71E1862D3B}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		..\Libs\BaseLib\Dx11FullLib\Dx11FullLib.vcxitems*{12b4ea0b-bf4f-4c4e-b659-dd6561ea2666}*SharedItemsImports = 9
 		..\Libs\BaseLib\Dx11Lib\Dx11Lib.vcxitems*{45d41acc-2c3c-43d2-bc10-02aa73ffc7c7}*SharedItemsImports = 9
-		GameSources\GameSources.vcxitems*{5184b598-9842-4856-85c8-5c2bbd8e5035}*SharedItemsImports = 4
 		..\Libs\BaseLib\Dx11FullLib\Dx11FullLib.vcxitems*{5184b598-9842-4856-85c8-5c2bbd8e5035}*SharedItemsImports = 4
 		..\Libs\BaseLib\Dx11Lib\Dx11Lib.vcxitems*{5184b598-9842-4856-85c8-5c2bbd8e5035}*SharedItemsImports = 4
 		..\Libs\BaseLib\DxLib\DxLib.vcxitems*{5184b598-9842-4856-85c8-5c2bbd8e5035}*SharedItemsImports = 4
 		..\Libs\BaseLib\DxShaders\DxShaders.vcxitems*{5184b598-9842-4856-85c8-5c2bbd8e5035}*SharedItemsImports = 4
 		..\Libs\BaseLib\SharedLib\SharedLib.vcxitems*{5184b598-9842-4856-85c8-5c2bbd8e5035}*SharedItemsImports = 4
+		..\Libs\ExtendLibs\ImGui\ImGui.vcxitems*{5184b598-9842-4856-85c8-5c2bbd8e5035}*SharedItemsImports = 4
+		GameSources\GameSources.vcxitems*{5184b598-9842-4856-85c8-5c2bbd8e5035}*SharedItemsImports = 4
 		..\Libs\BaseLib\DxShaders\DxShaders.vcxitems*{577bccee-82df-4f0e-bfcd-c4787d95afd3}*SharedItemsImports = 9
 		GameSources\GameSources.vcxitems*{8c1d084c-c178-4a5d-84d5-9d8b94e39ab0}*SharedItemsImports = 9
 		..\Libs\BaseLib\DxLib\DxLib.vcxitems*{974c28f3-3934-456b-be8e-408774ef14cf}*SharedItemsImports = 9
+		..\Libs\ExtendLibs\ImGui\ImGui.vcxitems*{a63f489a-dc0c-4494-8afc-be71e1862d3b}*SharedItemsImports = 9
 		..\Libs\BaseLib\SharedLib\SharedLib.vcxitems*{caa0470e-f76d-42a8-84fa-d6562fa70f4a}*SharedItemsImports = 9
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +69,7 @@ Global
 		{12B4EA0B-BF4F-4C4E-B659-DD6561EA2666} = {5FD3629C-1F59-4EBD-815D-73E8A9CA5825}
 		{CAA0470E-F76D-42A8-84FA-D6562FA70F4A} = {5FD3629C-1F59-4EBD-815D-73E8A9CA5825}
 		{577BCCEE-82DF-4F0E-BFCD-C4787D95AFD3} = {5FD3629C-1F59-4EBD-815D-73E8A9CA5825}
+		{A63F489A-DC0C-4494-8AFC-BE71E1862D3B} = {AE4A2F45-D1CA-4204-B84A-A5B7BD123C37}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {216D8A80-264B-4B9D-8C94-BB9C5550970C}

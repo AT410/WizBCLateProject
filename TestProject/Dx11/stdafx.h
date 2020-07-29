@@ -84,6 +84,11 @@ using namespace std;
 // XInput includes
 #include <xinput.h>
 
+//TODO
+#include <d3dcompiler.h>
+#ifdef _MSC_VER
+#pragma comment(lib, "d3dcompiler") // Automatically link with d3dcompiler.lib as we are using D3DCompile() below.
+#endif
 
 #pragma comment( lib, "d3d11.lib" )
 #pragma comment( lib, "d2d1.lib" )
@@ -125,6 +130,7 @@ using namespace Microsoft::WRL::Details;
 
 #include "../../Libs/BaseLib/Dx11Lib/Common.h"
 #include "../../Libs/BaseLib/Dx11FullLib/FullCommon.h"
+#include "../../ExtendLibs/ImGui/ImCommon.h"
 using namespace basecross::bsm;
 
 #include "resource.h"

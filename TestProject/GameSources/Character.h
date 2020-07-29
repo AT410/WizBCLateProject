@@ -8,6 +8,24 @@
 
 namespace basecross{
 
+	class DebugTest : public GameObject
+	{
+	public:
+		//-- \’z --
+		DebugTest(const shared_ptr<Stage>& StagePtr);
+
+		//-- ”jŠü --
+		virtual ~DebugTest() {}
+
+		//-- ‰Šú‰» --
+		void OnCreate()override;
+
+		//-- XVˆ— --
+		void OnUpdate()override;
+
+	private:
+
+	};
 
 }
 //end basecross

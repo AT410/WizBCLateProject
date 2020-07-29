@@ -42,6 +42,7 @@
     <Import Project="..\..\Libs\BaseLib\DxShaders\DxShaders.vcxitems" Label="Shared" />
     <Import Project="..\..\Libs\BaseLib\SharedLib\SharedLib.vcxitems" Label="Shared" />
     <Import Project="..\GameSources\GameSources.vcxitems" Label="Shared" />
+    <Import Project="..\..\Libs\ExtendLibs\ImGui\ImGui.vcxitems" Label="Shared" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
