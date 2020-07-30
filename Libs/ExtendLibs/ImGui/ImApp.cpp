@@ -4,7 +4,7 @@ namespace basecross
 {
 	unique_ptr<ImApp,ImApp::ImAppDeleter> ImApp::m_Instance;
 
-	ImApp::ImApp(HWND hWnd)
+	ImApp::ImApp(HWND hWnd,int MaxImCount)
 	{
 		// Setup Dear ImGui context
 		IMGUI_CHECKVERSION();
@@ -25,14 +25,21 @@ namespace basecross
 		auto D3DDeviceContext = DeviceRes->GetD3DDeviceContext();
 
 		ImGui_ImplDX11_Init(D3DDevice, D3DDeviceContext);
+		
+		ImFontConfig config;
+		config.MergeMode = true;
+		io.Fonts->AddFontDefault();
+		io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\meiryo.ttc", 18.0f, &config, io.Fonts->GetGlyphRangesJapanese());
 
+		m_maxImCount = MaxImCount > 0 ? MaxImCount : 1;
+		m_guiObjects.clear();
 	}
 
-	void ImApp::CreateApp(HWND hWnd)
+	void ImApp::CreateApp(HWND hWnd,const int MaxImCount)
 	{
 		if (m_Instance.get() == 0)
 		{
-			m_Instance.reset(new ImApp(hWnd));
+			m_Instance.reset(new ImApp(hWnd,MaxImCount));
 			// -- ‰Šú¶¬Žž‚Ìˆ—‚Í‚±‚±‚Ö --
 		}
 	}
@@ -79,27 +86,11 @@ namespace basecross
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
 
-		
-		// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
+		for (auto uObj : m_guiObjects)
 		{
-			static float f = 0.0f;
-			static int counter = 0;
-
-			ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
-
-			ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-
-			ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-
-			if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-				counter++;
-			ImGui::SameLine();
-			ImGui::Text("counter = %d", counter);
-
-			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-			ImGui::End();
+			// -- •`‰æˆ— --
+			uObj->OnGUI();
 		}
-
 		// Rendering
 		ImGui::Render();
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());

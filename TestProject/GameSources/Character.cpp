@@ -67,5 +67,53 @@ namespace basecross{
 		ptrString->SetText(str);
 
 	}
+
+	void TestGui::OnInit()
+	{
+
+	}
+
+	void TestGui::OnGUI()
+	{
+		auto col = App::GetApp()->GetScene<SceneBase>()->GetClearColor();
+
+		// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
+		{
+			static float f = 0.0f;
+			static int counter = 0;
+
+			ImGui::Begin(u8"Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+
+			ImGui::Text(u8"This is some useful text.");               // Display some text (you can use a format strings too)
+
+			ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+			ImGui::ColorEdit3("clear color", (float*)&col); // Edit 3 floats representing a color
+
+			if (ImGui::Button(u8"ƒeƒXƒg"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+				counter++;
+			ImGui::SameLine();
+			if (ImGui::Button(u8"Œ¸­"))
+				counter--;
+			ImGui::SameLine();
+			ImGui::Text("counter = %d", counter);
+
+			ImGui::ProgressBar(0.5f);
+
+			auto img = App::GetApp()->GetResource<TextureResource>(L"TestTex");
+			auto size = img->GetWidthHeight();
+			ImGui::Text("size = %d x %d", size.first, size.second);
+			ImGui::Image((void*)img->GetShaderResourceView().Get(), ImVec2(size.first, size.second));
+
+			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			ImGui::BeginChild("Test", ImVec2(100, 100), true, ImGuiWindowFlags_::ImGuiWindowFlags_ChildWindow);
+			ImGui::EndChild();
+
+			
+
+			ImGui::End();
+		}
+
+		App::GetApp()->GetScene<SceneBase>()->SetClearColor(col);
+	}
 }
 //end basecross

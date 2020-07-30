@@ -288,6 +288,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
+	case WM_SIZE:
+		if (wParam != SIZE_MINIMIZED)
+		{
+
+		}
+		break;
 	case WM_KEYDOWN:                // キーが押された
 		if (wParam == VK_ESCAPE) {  // 押されたのはESCキーだ
 			DestroyWindow(hWnd);	//ウインドウを破棄する
