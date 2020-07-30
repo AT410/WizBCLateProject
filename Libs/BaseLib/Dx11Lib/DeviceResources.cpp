@@ -14,6 +14,8 @@ namespace basecross {
 	struct TextureResource::Impl {
 		ComPtr<ID3D11ShaderResourceView> m_ShaderResView;	//リソースビュー
 		wstring m_FileName;		//テクスチャファイルへのパス
+		int width;
+		int height;
 
 		Impl(const wstring& FileName, const wstring& TexType = L"WIC");
 		~Impl() {}
@@ -116,6 +118,9 @@ namespace basecross {
 				);
 			}
 
+			width = metadata.width;
+			height = metadata.height;
+
 			//デバイスとコンテキストインターフェイスの取得
 			//デバイスの取得
 			auto Dev = App::GetApp()->GetDeviceResources();
@@ -170,6 +175,10 @@ namespace basecross {
 	}
 	const wstring& TextureResource::GetTextureFileName() const {
 		return pImpl->m_FileName;
+	}
+
+	const pair<float,float> TextureResource::GetWidthHeight() const {
+		return pair<float,float>(pImpl->width,pImpl->height);
 	}
 
 

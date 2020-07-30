@@ -20,6 +20,10 @@ namespace basecross{
 			SetClearColor(Col);
 			//自分自身にイベントを送る
 			//これにより各ステージやオブジェクトがCreate時にシーンにアクセスできる
+			wstring mediaPath;
+			App::GetApp()->GetDataDirectory(mediaPath);
+			App::GetApp()->RegisterTexture(L"TestTex", mediaPath + L"TexMask.png");
+
 			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStage");
 			
 		}

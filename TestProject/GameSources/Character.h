@@ -27,5 +27,19 @@ namespace basecross{
 
 	};
 
+	class TestGui :public ImGuiObject
+	{
+	public:
+		TestGui()
+			:ImGuiObject()
+		{
+
+		}
+
+		void OnInit()override;
+
+		void OnGUI()override;
+	};
+
 }
 //end basecross
