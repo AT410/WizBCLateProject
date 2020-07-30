@@ -46,6 +46,8 @@ namespace basecross {
 		*/
 		//--------------------------------------------------------------------------------------
 		const wstring& GetTextureFileName() const;
+
+		const pair<float, float> GetWidthHeight()const;
 	private:
 		// pImplイディオム
 		struct Impl;

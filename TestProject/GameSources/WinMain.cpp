@@ -136,6 +136,7 @@ int MainLoop(HINSTANCE hInstance, HWND hWnd, bool isFullScreen, int iClientWidth
 		}
 		////アプリケーションクラスの構築
 		App::CreateApp(hInstance, hWnd, isFullScreen, iClientWidth, iClientHeight);
+		ImApp::CreateApp(hWnd);
 		//シーンの作成
 		//戻り値のScenePtrは汎用的に使える
 		auto ScenePtr = App::GetApp()->CreateScene<Scene>();
@@ -205,6 +206,7 @@ int MainLoop(HINSTANCE hInstance, HWND hWnd, bool isFullScreen, int iClientWidth
 	}
 	//アプリケーションの削除
 	App::DeleteApp();
+	ImApp::DeleteApp();
 	//例外処理終了
 	//COMのリリース
 	::CoUninitialize();
@@ -254,6 +256,9 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 }
 
 
+// -- ImGuiCallBack --
+// Forward declare message handler from imgui_impl_win32.cpp
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 
 //--------------------------------------------------------------------------------------
@@ -269,6 +274,9 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 //--------------------------------------------------------------------------------------
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+	if (ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam))
+		return true;
+
 	PAINTSTRUCT ps;
 	HDC hdc;
 	switch (message)
@@ -279,6 +287,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
+		break;
+	case WM_SIZE:
+		if (wParam != SIZE_MINIMIZED)
+		{
+
+		}
 		break;
 	case WM_KEYDOWN:                // キーが押された
 		if (wParam == VK_ESCAPE) {  // 押されたのはESCキーだ
