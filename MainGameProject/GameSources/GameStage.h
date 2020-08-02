@@ -12,6 +12,9 @@ namespace basecross {
 	//	ゲームステージクラス
 	//--------------------------------------------------------------------------------------
 	class GameStage : public Stage {
+
+		shared_ptr<Camera> m_ptrCamera;
+		float time;
 		//ビューの作成
 		void CreateViewLight();
 	public:
@@ -20,6 +23,9 @@ namespace basecross {
 		virtual ~GameStage() {}
 		//初期化
 		virtual void OnCreate()override;
+		virtual void OnUpdate()override;
+
+		void UpDateCameraPos(Vec2 at);
 	};
 
 
