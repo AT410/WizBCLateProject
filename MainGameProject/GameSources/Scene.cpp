@@ -14,6 +14,10 @@ namespace basecross{
 	//--------------------------------------------------------------------------------------
 	void Scene::OnCreate(){
 		try {
+			wstring dataDir;
+			App::GetApp()->GetDataDirectory(dataDir);
+			//画像・音声データのリソースを作成
+			CreateResourses(dataDir);
 			//クリアする色を設定
 			Col4 Col;
 			Col.set(31.0f / 255.0f, 30.0f / 255.0f, 71.0f / 255.0f, 255.0f / 255.0f);
@@ -35,6 +39,52 @@ namespace basecross{
 			//最初のアクティブステージの設定
 			ResetActiveStage<GameStage>();
 		}
+	}
+
+	void Scene::CreateResourses(wstring dir) {
+		HANDLE hFind;
+		WIN32_FIND_DATA win32fd;
+
+		wstring newdir = dir + L"*.*";
+		const wchar_t *dirExtension = newdir.c_str();
+
+		hFind = FindFirstFile(dirExtension, &win32fd);
+
+		do {
+			// 属性がFILE_ATTRIBUTE_DIRECTORYなら
+			if (win32fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+				// ディレクトリ名を取得
+				wstring ditectoryName = win32fd.cFileName;
+				// 新しいフォルダの場所
+				wstring newDateDir = dir + ditectoryName + L"/";
+				if (ditectoryName.find(L".")) {
+					// その中を検索
+					CreateResourses(newDateDir);
+				}
+			}
+			else {
+				wstring fileName = win32fd.cFileName;
+
+				auto exe = fileName.substr(fileName.find(L"."), fileName.length());
+
+				//画像ファイルだった場合
+				if (exe == L".png" || exe == L".tga" || exe == L".jpg") {
+					// ファイルの場所
+					wstring strTexture = dir + fileName;
+					// テクスチャーを登録
+					App::GetApp()->RegisterTexture(fileName, strTexture);
+				}
+
+				if (exe == L".wav") {
+					wstring OpenWav = dir + fileName;
+
+					App::GetApp()->RegisterWav(fileName, OpenWav);
+				}
+			}
+		} while (FindNextFile(hFind, &win32fd));
+
+		// 後処理
+		FindClose(hFind);
 	}
 
 }
