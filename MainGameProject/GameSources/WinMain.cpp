@@ -136,6 +136,7 @@ int MainLoop(HINSTANCE hInstance, HWND hWnd, bool isFullScreen, int iClientWidth
 		}
 		////アプリケーションクラスの構築
 		App::CreateApp(hInstance, hWnd, isFullScreen, iClientWidth, iClientHeight);
+		ImApp::CreateApp(hWnd);
 		//シーンの作成
 		//戻り値のScenePtrは汎用的に使える
 		auto ScenePtr = App::GetApp()->CreateScene<Scene>();
@@ -205,6 +206,7 @@ int MainLoop(HINSTANCE hInstance, HWND hWnd, bool isFullScreen, int iClientWidth
 	}
 	//アプリケーションの削除
 	App::DeleteApp();
+	ImApp::DeleteApp();
 	//例外処理終了
 	//COMのリリース
 	::CoUninitialize();

@@ -127,6 +127,8 @@ using namespace Microsoft::WRL::Details;
 #include "../../Libs/BaseLib/Dx11FullLib/FullCommon.h"
 using namespace basecross::bsm;
 
+#include "../../ExtendLibs/ImGui/ImCommon.h"
+
 #include "resource.h"
 
 
