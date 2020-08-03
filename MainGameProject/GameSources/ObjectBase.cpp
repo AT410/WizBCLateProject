@@ -19,10 +19,7 @@ namespace basecross {
 		m_position(position),
 		m_layer(layer),
 		m_textureName(texture)
-	{
-		//エラーが起きないよう初期化
-		m_textureName = L"thumbnail.png";
-	}
+	{}
 
 	ObjectBase::ObjectBase(const shared_ptr<Stage>& stage,
 		ObjectData& objectdata) :
@@ -30,18 +27,16 @@ namespace basecross {
 		m_rotation(objectdata.rotation),
 		m_scale(objectdata.scale),
 		m_position(objectdata.position),
-		m_layer(objectdata.layer)
-	{
-		//エラーが起きないよう初期化
-		m_textureName = L"thumbnail.png";
-	}
+		m_layer(objectdata.layer),
+		m_textureName(objectdata.texture)
+	{}
 
 	void ObjectBase::OnCreate() {
 		DrawingImage(m_textureName);
+		InitializeTransfrom();
 	}
 
 	void ObjectBase::DrawingImage(wstring texStr) {
-        m_textureName = texStr;
 		Col4 color(1, 1, 1, 1);
 		Vec2 tipSize = Vec2(1.0f, 1.0f);
 
@@ -110,7 +105,14 @@ namespace basecross {
 		this->SetAlphaActive(true);
 
 		SetDrawLayer(m_layer);
-
 	}
+
+	void ObjectBase::InitializeTransfrom() {
+		auto ptrTransform = GetComponent<Transform>();
+		ptrTransform->SetScale(m_scale);
+		ptrTransform->SetRotation(m_rotation);
+		ptrTransform->SetPosition(m_position);
+	}
+
 }
 //end basecross

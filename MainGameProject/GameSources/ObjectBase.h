@@ -39,14 +39,16 @@ namespace basecross {
 			drawComp->SetTextureResource(m_textureName);	
 		};
 		
-
 		//テクスチャを張り付ける
 		void DrawingImage(wstring texStr);
 
 		//テクスチャを張り付ける
 		void DrawingImage(wstring texStr, Vec2 imageSize);
-
+		
+		//トランスフォームを設定
+		void InitializeTransfrom();
 	};
+
 }
 
 //end basecross
