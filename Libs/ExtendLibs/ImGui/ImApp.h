@@ -54,7 +54,7 @@ namespace basecross
 		template<typename T,typename ...Ts>
 		shared_ptr<T> AddImGuiObject(Ts&&...params)
 		{
-			shared_ptr<T> ptr = shared_ptr<T>(new T());
+			shared_ptr<T> ptr = shared_ptr<T>(new T(params...));
 			ptr->OnInit();
 
 			if (m_guiObjects.size() <= m_maxImCount)

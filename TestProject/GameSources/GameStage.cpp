@@ -32,9 +32,10 @@ namespace basecross {
 		try {
 			//ビューとライトの作成
 			CreateViewLight();
+			AddGameObject<Test>();
 			AddGameObject<DebugTest>();
 
-			ImApp::GetApp()->AddImGuiObject<TestGui>();
+			ImApp::GetApp()->AddImGuiObject<TestGui>(u8"TEST1");
 		}
 		catch (...) {
 			throw;
