@@ -7,17 +7,38 @@
     <Filter Include="Sources">
       <UniqueIdentifier>{96692d2a-8790-41a9-bfac-6c5662d4ad61}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headers\BaseObject">
+      <UniqueIdentifier>{846a495a-487b-4807-a403-844ba887fcbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\BaseObject">
+      <UniqueIdentifier>{d39cbed2-bd77-4454-9a51-699b51e07b7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\UI">
+      <UniqueIdentifier>{6912f744-1462-41fd-adc3-2a3fe7eda64f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Stage">
+      <UniqueIdentifier>{1cfcaf08-1988-4b8f-aa75-8163a373ede3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Object">
+      <UniqueIdentifier>{6442b78d-64cf-4565-bb67-47430074db6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Data">
+      <UniqueIdentifier>{ac04267d-7e5f-4892-b289-050052ac8173}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Object">
+      <UniqueIdentifier>{400d70e8-8400-4a21-ad6a-5ba827167661}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Data">
+      <UniqueIdentifier>{9dd2e5eb-8e83-4e73-8b49-b80eec4f4289}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Stage">
+      <UniqueIdentifier>{467b2b31-40a6-4226-a836-2fcb4eb5154a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\UI">
+      <UniqueIdentifier>{98f55ad5-75ea-4c60-9dac-450e43cf538f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Character.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)GameStage.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Player.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Project.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -30,17 +51,17 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ProjectBehavior.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameStage.h">
+      <Filter>Headers\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Player.h">
+      <Filter>Headers\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Character.h">
+      <Filter>Headers\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)GameStage.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ProjectShader.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
@@ -52,6 +73,15 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ProjectBehavior.cpp">
       <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
+      <Filter>Sources\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp">
+      <Filter>Sources\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameStage.cpp">
+      <Filter>Sources\Stage</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
