@@ -30,8 +30,8 @@ namespace basecross{
 	class TestGui :public ImGuiObject
 	{
 	public:
-		TestGui()
-			:ImGuiObject()
+		TestGui(const string& key)
+			:ImGuiObject(),m_key(key)
 		{
 
 		}
@@ -39,6 +39,9 @@ namespace basecross{
 		void OnInit()override;
 
 		void OnGUI()override;
+
+	private:
+		string m_key;
 	};
 
 	class Test : public GameObject
@@ -57,6 +60,8 @@ namespace basecross{
 
 		void OnDestroy()override;
 
+		// -- グルーコード --
+		//int l_Add(lua_State* state);
 	private:
 		bool m_cosole;
 		lua_State *m_state;

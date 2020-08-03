@@ -14,50 +14,62 @@ namespace basecross{
 		m_state = luaL_newstate();
 	}
 
+	int l_Add(lua_State* state)
+	{
+		//第1引数 intとして取得
+		int x = luaL_checkinteger(state, -2);
+		//第2引数
+		int y = luaL_checkinteger(state, -1);
+		int result = x + y;
+
+		printf("%d + %d を計算します\n", x, y);
+
+		//戻り値をスタックに積む
+		lua_pushnumber(state, result);
+		return 1; //戻り値の数を指定
+	}
+
 	void Test::OnCreate()
 	{
-		// コンソールを作成する
-		AllocConsole();
-		// 標準入出力に割り当てる
-		FILE* fp = NULL;
-		// 昔のコード
-		//freopen("CONOUT$", "w", stdout);
-		//freopen("CONIN$", "r", stdin);
-		// 現在のコード
-		freopen_s(&fp, "CONOUT$", "w", stdout);
-		freopen_s(&fp, "CONIN$", "r", stdin);
-		wcout << L"テストですよ" << endl;
-
 		luaL_openlibs(m_state);
+
+		//l_add関数をadd関数としてLuaに登録
+		lua_register(m_state, "add", l_Add);
+		lua_register(m_state, "Edit", luaTest::lGenerateEdit);
 
 		// Luaファイルを開いて読み込み
 		// これでLuaステートに関数が登録されます
-		//if (luaL_dofile(m_state, "test.lua")) 
-		//{
-		//	printf("%s\n", lua_tostring(m_state, lua_gettop(m_state)));
-		//	lua_close(m_state);
-		//	return;
-		//}
+		wstring mediaPath;
+		App::GetApp()->GetDataDirectory(mediaPath);
+		string path;
+		Util::ConvertWstringtoUtf8(mediaPath, path);
 
-		lua_pushboolean(m_state, 1);
-		lua_pushnumber(m_state, 100.0);
-		lua_pushstring(m_state, "Marupeke");
-		
-		
+		path += "test.lua";
 
-		int ret= luaL_dostring(m_state, "print('hello lua script!!')");;
-		if (ret != 0)
+		if (luaL_dofile(m_state, path.c_str()))
 		{
-			cout << "Error:" << lua_tostring(m_state, -1) << endl;
-			lua_pop(m_state, 1);
+			printf("%s\n", lua_tostring(m_state, lua_gettop(m_state)));
+			lua_close(m_state);
+			return;
 		}
 
-		cout << "Test:" << lua_tostring(m_state, -1) << endl;
+		//lua_pushboolean(m_state, 1);
+		//lua_pushnumber(m_state, 100.0);
+		//lua_pushstring(m_state, "Marupeke");
+		
+		// 関数を呼ぶためにスタックに値を積む
+		lua_getglobal(m_state, "Calc"); // 関数名を積む
+		lua_pushnumber(m_state, 1); // 第 1 引数の値を積む
+		lua_pushnumber(m_state, 1); // 第 2 引数
 
-		FreeConsole();
+		// 関数を呼ぶ. 引数 (二つ), 戻り値 (一つ).
+		lua_call(m_state, 2, 1);
 
-
-		m_cosole = true;
+		// 関数の結果を得る
+		int n = lua_tointeger(m_state, -1);
+		lua_pop(m_state, 1);
+		
+		MessageBox(0, Util::IntToWStr(n).c_str(), 0, 0);
 	}
 
 	void Test::OnUpdate()
@@ -149,22 +161,25 @@ namespace basecross{
 			static float f = 0.0f;
 			static int counter = 0;
 
-			ImGui::Begin(u8"Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+			ImGui::Begin(m_key.c_str());                          // Create a window called "Hello, world!" and append into it.
 
 			ImGui::Text(u8"This is some useful text.");               // Display some text (you can use a format strings too)
 
 			ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
 			ImGui::ColorEdit3("clear color", (float*)&col); // Edit 3 floats representing a color
 
-			if (ImGui::Button(u8"テスト"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+				// Buttons return true when clicked (most widgets return true when edited/activated)
+			if (ImGui::Button(u8"テスト"))
+			{
 				counter++;
+			}
 			ImGui::SameLine();
 			if (ImGui::Button(u8"減少"))
 				counter--;
 			ImGui::SameLine();
 			ImGui::Text("counter = %d", counter);
 
-			ImGui::ProgressBar(0.5f);
+			ImGui::ProgressBar(f);
 
 			auto img = App::GetApp()->GetResource<TextureResource>(L"TestTex");
 			auto size = img->GetWidthHeight();
@@ -172,10 +187,6 @@ namespace basecross{
 			ImGui::Image((void*)img->GetShaderResourceView().Get(), ImVec2(size.first, size.second));
 
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-			ImGui::BeginChild("Test", ImVec2(100, 100), true, ImGuiWindowFlags_::ImGuiWindowFlags_ChildWindow);
-			ImGui::EndChild();
-
-			
 
 			ImGui::End();
 		}

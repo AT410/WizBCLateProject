@@ -4,6 +4,13 @@
 //
 #define IDI_ICON1                       101
 
+#define IDR_MENU_MAIN    1001
+
+// Menu Item ID
+#define IDM_FILE_OPEN    2000
+#define IDM_FILE_EXIT    2001
+#define IDM_HELP_ABOUT   2100
+
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED

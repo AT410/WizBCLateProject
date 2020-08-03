@@ -38,6 +38,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 	wcex.lpszMenuName = nullptr;
 	wcex.lpszClassName = pClassName;
 	wcex.hIconSm = LoadIcon(wcex.hInstance, (LPCTSTR)IDI_ICON1);
+	wcex.lpszMenuName = MAKEINTRESOURCE(IDR_MENU_MAIN);
 	return RegisterClassEx(&wcex);
 }
 
@@ -96,7 +97,7 @@ HWND InitInstance(HINSTANCE hInstance, int nCmdShow, bool isFullScreen, int iCli
 			rc.right - rc.left,		//幅指定
 			rc.bottom - rc.top,		//高さ指定
 			nullptr,					// 親ウインドウのハンドル（なし）
-			nullptr,					// メニューや子ウインドウのハンドル
+			LoadMenu(hInstance,MAKEINTRESOURCE(IDR_MENU_MAIN)),					// メニューや子ウインドウのハンドル
 			hInstance,				// アプリケーションインスタンスのハンドル
 			nullptr					// ウインドウの作成データ
 		);
