@@ -19,12 +19,13 @@ namespace structdata {
 		Vec2 position;
 		Vec3 rotation;
 		Vec2 size;
+		Vec2 UVPosition;
 		int layer;
 		wstring texture;
 
 		UIData(){}
-		UIData(Vec2 pos, Vec3 rot, Vec2 size, int layer, wstring texture) :
-			position(pos), rotation(rot), size(size), layer(layer), texture(texture)
+		UIData(Vec2 pos, Vec3 rot, Vec2 size, Vec2 UVPos, int layer, wstring texture) :
+			position(pos), rotation(rot), size(size), UVPosition(UVPos),layer(layer), texture(texture)
 		{}
 	};
 }
