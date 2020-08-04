@@ -28,4 +28,16 @@ namespace structdata {
 			position(pos), rotation(rot), size(size), UVPosition(UVPos),layer(layer), texture(texture)
 		{}
 	};
+
+	struct MapData
+	{
+		Vec3 mapPos;
+		int defaultMapCost;
+		int nowMapCost;
+
+		MapData(){}
+		MapData(Vec3 mapPos, int defaultMapCost, int nowMapCost):
+			mapPos(mapPos), defaultMapCost(defaultMapCost), nowMapCost(nowMapCost)
+		{}
+	};
 }
