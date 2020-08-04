@@ -9,17 +9,21 @@
 namespace basecross {
 	UIBase::UIBase(const shared_ptr<Stage>& stage,
 		Vec3& rotation,
-		Vec3& scale,
+		Vec2& size,
 		Vec2& position,
+		Vec2& UVPos,
 		int layer,
 		wstring tex) :
 		GameObject(stage),
 		m_rotation(rotation),
-		m_scale(scale),
+		m_size(size),
 		m_position(position),
+		m_UVPosition(UVPos),
 		m_layer(layer),
 		m_textureName(tex)
-	{}
+	{
+		m_scale = Vec3(1.0f);
+	}
 
 	UIBase::UIBase(const shared_ptr<Stage>& stage,
 		UIData& UIdata):
@@ -27,6 +31,7 @@ namespace basecross {
 		m_rotation(UIdata.rotation),
 		m_size(UIdata.size),
 		m_position(UIdata.position),
+		m_UVPosition(UIdata.UVPosition),
 		m_layer(UIdata.layer),
 		m_textureName(UIdata.texture)
 	{
@@ -35,7 +40,6 @@ namespace basecross {
 
 	void UIBase::DrawingImage(Vec2 halfSize, Vec2 texSize) {
 		Col4 color(1, 1, 1, 1);
-		Vec2 tipSize = Vec2(1.0f, 1.0f);
 
 		vector<VertexPositionColorTexture> vertices = {
 			{VertexPositionColorTexture(Vec3(-halfSize.x,+halfSize.y,0),color,Vec2(texSize.x,texSize.x))},
@@ -78,7 +82,7 @@ namespace basecross {
 	};
 
 	void UIBase::OnCreate() {
-		DrawingImage(Vec2(20,20), Vec2(0.0f,1.0f));
+		DrawingImage(m_size, m_UVPosition);
 		InitializeTransfrom();
 	}
 
