@@ -67,10 +67,12 @@ namespace basecross {
 			auto DWriteFactory = Dev->GetDWriteFactory();
 			auto D2DDeviceContext = Dev->GetD2DDeviceContext();
 
+			auto FontRes = App::GetApp()->GetFontResources();
+
 			ThrowIfFailed(
 				DWriteFactory->CreateTextFormat(
 				pImpl->m_FontName.c_str(),
-				nullptr,
+				FontRes->GetFontCollection().Get(),
 				DWRITE_FONT_WEIGHT_LIGHT,
 				DWRITE_FONT_STYLE_NORMAL,
 				DWRITE_FONT_STRETCH_NORMAL,
@@ -138,10 +140,12 @@ namespace basecross {
 		auto DWriteFactory = Dev->GetDWriteFactory();
 		auto D2DDeviceContext = Dev->GetD2DDeviceContext();
 
+		auto FontRes = App::GetApp()->GetFontResources();
+
 		ThrowIfFailed(
 			DWriteFactory->CreateTextFormat(
 			FontName.c_str(),
-			nullptr,
+			FontRes->GetFontCollection().Get(),
 			DWRITE_FONT_WEIGHT_LIGHT,
 			DWRITE_FONT_STYLE_NORMAL,
 			DWRITE_FONT_STRETCH_NORMAL,

@@ -97,6 +97,7 @@ namespace basecross{
 	{
 		auto ptrString = AddComponent<StringSprite>();
 		ptrString->SetTextRect(Rect2D<float>(16.0f, 50.0f, 640.0f, 480.0f));
+		ptrString->SetFont(L"暗黒ゾン字", 36);
 
 		//各パフォーマンスを得る
 		GetStage()->SetCollisionPerformanceActive(true);

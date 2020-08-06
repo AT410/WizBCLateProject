@@ -11,6 +11,7 @@ namespace basecross {
 	class DeviceResources;
 	class TextureResource;
 	class AudioResource;
+	class FontResources;
 
 	//--------------------------------------------------------------------------------------
 	///	マルチサウンドで使用するアイテム
@@ -763,6 +764,9 @@ namespace basecross {
 		UINT m_GameHeight;								///< ゲーム盤高さ(ピクセル)
 		bool m_ShadowActive;							///< 影が有効かどうか
 		shared_ptr<DeviceResources> m_DeviceResources;	///< デバイス
+
+		shared_ptr<FontResources> m_FontResources;
+
 		shared_ptr<SceneInterface> m_SceneInterface;	///< シーン
 		shared_ptr<EventDispatcher> m_EventDispatcher;	///< イベント送信オブジェクト
 
@@ -901,6 +905,28 @@ namespace basecross {
 		*/
 		//--------------------------------------------------------------------------------------
 		shared_ptr<DeviceResources> GetDeviceResources() const { return m_DeviceResources; }
+		//--------------------------------------------------------------------------------------
+		/*!
+		@brief デバイスリソースの取得
+		@return	デバイスリソース
+		*/
+		//--------------------------------------------------------------------------------------
+		shared_ptr<FontResources> GetFontResources() 
+		{
+			if (m_FontResources == nullptr)
+			{
+				throw(BaseException(L"フォントリソースが作成されていません", L"", L""));
+			}
+			return m_FontResources; 
+		}
+		//--------------------------------------------------------------------------------------
+		/*!
+		@brief 
+		@param[in]	
+		@return	なし
+		*/
+		//--------------------------------------------------------------------------------------
+		void SetFontResources(const shared_ptr<FontResources>& ptr) { m_FontResources = ptr; }
 		//--------------------------------------------------------------------------------------
 		/*!
 		@brief シーンインターフェイスの取得
