@@ -24,6 +24,20 @@ namespace basecross{
 			App::GetApp()->GetDataDirectory(mediaPath);
 			App::GetApp()->RegisterTexture(L"TestTex", mediaPath + L"TexMask.png");
 
+			// -- ƒtƒHƒ“ƒg‚ğ“Ç‚İ‚Ş --
+			auto fontRes = make_shared<FontResources>();
+
+			wstring path;
+			App::GetApp()->GetDataDirectory(path);
+			path += L"fonts/";
+
+			fontRes->AddFontFile(path + L"001Shirokuma-Regular.otf");
+			fontRes->AddFontFile(path + L"AiharaHudemojiKaisho3.00.ttf");
+			fontRes->AddFontFile(path + L"AiharaHudemojiKaisho3.ttf");
+			fontRes->AddFontFile(path + L"memoir.otf");
+			fontRes->AddFontFile(path + L"Zomzi.TTF");
+
+			App::GetApp()->SetFontResources(fontRes);
 			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStage");
 			
 		}
