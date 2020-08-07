@@ -40,4 +40,13 @@ namespace structdata {
 			mapPos(mapPos), defaultMapCost(defaultMapCost), nowMapCost(nowMapCost)
 		{}
 	};
+
+	struct MapID
+	{
+		int x, y;
+		MapID(){}
+		MapID(int x, int y):
+			x(x),y(y)
+		{}
+	};
 }
