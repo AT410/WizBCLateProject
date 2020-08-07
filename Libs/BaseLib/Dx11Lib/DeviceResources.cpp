@@ -14,8 +14,8 @@ namespace basecross {
 	struct TextureResource::Impl {
 		ComPtr<ID3D11ShaderResourceView> m_ShaderResView;	//リソースビュー
 		wstring m_FileName;		//テクスチャファイルへのパス
-		int width;
-		int height;
+		size_t width;
+		size_t height;
 
 		Impl(const wstring& FileName, const wstring& TexType = L"WIC");
 		~Impl() {}
@@ -177,8 +177,8 @@ namespace basecross {
 		return pImpl->m_FileName;
 	}
 
-	const pair<float,float> TextureResource::GetWidthHeight() const {
-		return pair<float,float>(pImpl->width,pImpl->height);
+	const pair<size_t, size_t> TextureResource::GetWidthHeight() const {
+		return pair<size_t, size_t>(pImpl->width,pImpl->height);
 	}
 
 
@@ -1110,7 +1110,137 @@ namespace basecross {
 
 	}
 
+	//----------------------------------------------------------------------------
+	//FontResources
+	//----------------------------------------------------------------------------
+	struct FontResources::Impl
+	{
+		ComPtr<IDWriteFontCollection1> m_FontCollection;
+		ComPtr<IDWriteFontSetBuilder1> m_FontSetBuilder;
 
+
+		// -- 制御 --
+		bool m_AppendFonts;
+		vector<wstring> m_FontPaths;
+
+		Impl()
+			:m_FontCollection(nullptr),m_FontSetBuilder(nullptr),m_AppendFonts(false)
+		{
+			auto DWriteFactory5 = App::GetApp()->GetDeviceResources()->GetDWriteFactory5();
+
+			ThrowIfFailed(
+				DWriteFactory5->CreateFontSetBuilder(&m_FontSetBuilder),
+				L"フォントセットビルダーの作成に失敗しました。",
+				L"DWriteFactory5->CreateFontSetBuilder()",
+				L"OriginalStringSprite::OriginalStringSprite()"
+			);
+			
+		}
+
+		void AddFont(const wstring& FontPath)
+		{
+			// -- ダブり検索 --
+			auto result = find(m_FontPaths.begin(), m_FontPaths.end(), FontPath);
+			if (result == m_FontPaths.end())
+			{
+				m_FontPaths.push_back(FontPath);
+				m_AppendFonts = true;
+			}
+			else
+			{
+				throw(BaseException(L"フォントキーが設定済みです。", L"", L""));
+			}
+		}
+
+		void ResetFontSetBuilder()
+		{
+			auto DWriteFactory5 = App::GetApp()->GetDeviceResources()->GetDWriteFactory5();
+
+			ThrowIfFailed(
+				DWriteFactory5->CreateFontSetBuilder(&m_FontSetBuilder),
+				L"フォントセットビルダーの作成に失敗しました。",
+				L"DWriteFactory5->CreateFontSetBuilder()",
+				L"OriginalStringSprite::OriginalStringSprite()"
+			);
+
+			IDWriteFontFile* pFontFile;
+
+			for (auto path : m_FontPaths)
+			{
+				ZeroMemory(&pFontFile, sizeof(IDWriteFontFile*));
+				ThrowIfFailed(
+					DWriteFactory5->CreateFontFileReference(path.c_str(), nullptr, &pFontFile),
+					L"フォントデータの作成に失敗しました。",
+					L"DWriteFactory5->CreateFontFileReference()",
+					L"OriginalStringSprite::OriginalStringSprite()"
+				);
+
+				if (FAILED(m_FontSetBuilder->AddFontFile(pFontFile)))
+				{
+					throw(BaseException(L"フォントファイルを追加できませんでした。", L"", L""));
+				}
+
+			}
+		}
+
+		void ResetFontCollection()
+		{
+			auto DWriteFactory5 = App::GetApp()->GetDeviceResources()->GetDWriteFactory5();
+
+			IDWriteFontSet* psysFontSet;
+			DWriteFactory5->GetSystemFontSet(&psysFontSet);
+
+
+			// -- システムフォントを追加 --
+			m_FontSetBuilder->AddFontSet(psysFontSet);
+
+			//フォントセットを作成する。
+			IDWriteFontSet* pFontSet;
+			ThrowIfFailed(
+				m_FontSetBuilder->CreateFontSet(&pFontSet),
+				L"フォントセットの作成に失敗しました。",
+				L"pFontSetBuilder->CreateFontSet()",
+				L"OriginalStringSprite::OriginalStringSprite()"
+			);
+
+			//フォントセットからフォントコレクションを作成する
+			ThrowIfFailed(
+				DWriteFactory5->CreateFontCollectionFromFontSet(pFontSet, &m_FontCollection),
+				L"フォントコレクションの作成に失敗しました。",
+				L"DWriteFactory5->CreateFontCollectionFromFontSet()",
+				L"OriginalStringSprite::OriginalStringSprite()"
+			);
+
+		}
+	};
+
+	FontResources::FontResources()
+		:pImpl(new Impl())
+	{
+
+	}
+
+	FontResources::~FontResources()
+	{
+
+	}
+
+	ComPtr<IDWriteFontCollection1>& FontResources::GetFontCollection()const
+	{
+		if (pImpl->m_AppendFonts)
+		{
+			pImpl->ResetFontSetBuilder();
+			pImpl->ResetFontCollection();
+			pImpl->m_AppendFonts = false;
+		}
+		return pImpl->m_FontCollection;
+	}
+
+	void FontResources::AddFontFile(const wstring& FontPath)
+	{
+		pImpl->AddFont(FontPath);
+	}
+	
 	//--------------------------------------------------------------------------------------
 	//	struct DeviceResources::Impl;
 	//	用途: Direct11デバイスイディオム
@@ -1132,6 +1262,8 @@ namespace basecross {
 		// DirectWrite 描画コンポーネント。
 		ComPtr<IDWriteFactory2>		m_dwriteFactory;
 		ComPtr<IWICImagingFactory2>	m_wicFactory;
+
+		ComPtr<IDWriteFactory5> m_dwriteFactory5;
 
 		float m_dpi;
 
@@ -1372,6 +1504,17 @@ namespace basecross {
 		);
 
 		ThrowIfFailed(
+			DWriteCreateFactory(
+				DWRITE_FACTORY_TYPE_SHARED,
+				__uuidof(IDWriteFactory5),
+				&m_dwriteFactory5
+			),
+			L"DirectWrite ファクトリ作成に失敗しました。",
+			L"DWriteCreateFactory()",
+			L"DeviceResources::Impl::CreateDeviceResources()"
+		);
+
+		ThrowIfFailed(
 			CoCreateInstance(
 				CLSID_WICImagingFactory2,
 				nullptr,
@@ -1566,6 +1709,7 @@ namespace basecross {
 	ID2D1DeviceContext1*	DeviceResources::GetD2DDeviceContext() const { return pImpl->m_d2dContext.Get(); }
 	IDWriteFactory2*		DeviceResources::GetDWriteFactory() const { return pImpl->m_dwriteFactory.Get(); }
 	IWICImagingFactory2*	DeviceResources::GetWicImagingFactory() const { return pImpl->m_wicFactory.Get(); }
+	IDWriteFactory5*		DeviceResources::GetDWriteFactory5() const { return pImpl->m_dwriteFactory5.Get(); }
 
 	void DeviceResources::InitializeStates() {
 		ID3D11ShaderResourceView* pNull[D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT] = { nullptr };

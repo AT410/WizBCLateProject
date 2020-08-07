@@ -47,7 +47,7 @@ namespace basecross {
 		//--------------------------------------------------------------------------------------
 		const wstring& GetTextureFileName() const;
 
-		const pair<float, float> GetWidthHeight()const;
+		const pair<size_t, size_t> GetWidthHeight()const;
 	private:
 		// pImplイディオム
 		struct Impl;
@@ -1714,6 +1714,24 @@ namespace basecross {
 
 	};
 
+	//----------------------------------------------------------------------------
+	//FontResource
+	//----------------------------------------------------------------------------
+	class FontResources
+	{
+	public:
+		FontResources();
+
+		virtual ~FontResources();
+
+		ComPtr<IDWriteFontCollection1>& GetFontCollection()const;
+
+		void AddFontFile(const wstring& FontPath);
+
+	private:
+		struct Impl;
+		unique_ptr<Impl> pImpl;
+	};
 	//汎用的な設定用定義
 	//--------------------------------------------------------------------------------------
 	///	ブレンドステート
@@ -1858,6 +1876,13 @@ namespace basecross {
 		*/
 		//--------------------------------------------------------------------------------------
 		IWICImagingFactory2* GetWicImagingFactory() const;
+		//--------------------------------------------------------------------------------------
+		/*!
+		@brief	DWriteFactory5インターフェイスの取得
+		@return	DWriteFactory5インターフェイス
+		*/
+		//--------------------------------------------------------------------------------------
+		IDWriteFactory5* GetDWriteFactory5() const;
 		//--------------------------------------------------------------------------------------
 		/*!
 		@brief	シャドウマップのクリア
