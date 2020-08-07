@@ -17,12 +17,10 @@ namespace basecross{
 	int l_Add(lua_State* state)
 	{
 		//第1引数 intとして取得
-		int x = luaL_checkinteger(state, -2);
+		lua_Integer x = luaL_checkinteger(state, -2);
 		//第2引数
-		int y = luaL_checkinteger(state, -1);
-		int result = x + y;
-
-		printf("%d + %d を計算します\n", x, y);
+		lua_Integer y = luaL_checkinteger(state, -1);
+		lua_Integer result = x + y;
 
 		//戻り値をスタックに積む
 		lua_pushnumber(state, result);
