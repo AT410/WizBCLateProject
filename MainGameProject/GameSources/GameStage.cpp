@@ -70,5 +70,155 @@ namespace basecross {
 		m_ptrCamera->SetAt(setCameraAt);
 	}
 
+	void GameStage::ChangeGameStateNum(eGameStateNum gameState) {
+		m_gameStateNum = gameState;
+	}
+
+	void GameStage::ConfirmationCharacter() {
+		for (int i = 0; i < m_charactorMapID[m_playerTurnNum].size(); i++) {
+			if (m_charactorMapID[m_playerTurnNum][i].mapPos == m_choiceMapID.mapPos) {
+				m_choiceCharactorID = i;
+				//m_charactorCommandData;
+				MessageBox(0, L"�L�����N�^�[������", L"�L�����N�^�[�ԍ��F"+ i, 0);
+				//�L�����N�^�[�̃R�}���h�I���Ԃɂ���
+				SettingMoveCostMap();
+				return;
+			}
+		}
+	}
+
+	void GameStage::ConfirmationMove() {
+		if (m_mapData[m_choiceMapID.y][m_choiceMapID.x].nowMapCost != eXMLMapStateNum::NotAvailable) {
+			for (int i = 0; i < m_canActionMapID.size(); i++) {
+				if (m_canActionMapID[i].mapPos == m_choiceMapID.mapPos) {
+					m_charactorMapID[m_playerTurnNum][m_choiceCharactorID] = m_choiceMapID;
+					m_charactorCommandData[m_playerTurnNum][m_choiceCharactorID].isMoved = true;
+					ResetCanActionMapID();
+					return;
+				}
+			}
+		}
+	}
+
+	void GameStage::ConfirmationAttack() {
+		for (int i = 0; i < m_charactorMapID.size(); i++) {
+			if (i != m_playerTurnNum) {
+				SerchCharactor(i);
+			}
+		}
+	}
+
+	void GameStage::SerchCharactor(int playerNum) {
+		for (int i = 0; i < m_charactorMapID[playerNum].size(); i++) {
+			if (m_choiceMapID.mapPos == m_charactorMapID[playerNum][i].mapPos) {
+				//�U���\
+				m_charactorCommandData[m_playerTurnNum][m_choiceCharactorID].isAttacked = true;
+			}
+		}
+	}
+
+	void GameStage::CreateCanAcionMapID(int actionCost) {
+		m_mapData[m_choiceMapID.y][m_choiceMapID.x].nowMapCost = actionCost;
+		m_canActionMapID.push_back(m_choiceMapID);
+
+		MapSearch4(m_choiceMapID, actionCost);
+	}
+
+	void GameStage::MapSearch4(MapID mapID, int actionCost) {
+		if (mapID.x > 0 && mapID.y > 0 && mapID.x < m_mapData[0].size(), mapID.y < m_mapData.size()) {
+			auto searchMapID = MapID(mapID.x, mapID.y -1);
+			MapSearch(searchMapID, actionCost);
+
+			searchMapID = MapID(mapID.x - 1, mapID.y);
+			MapSearch(searchMapID, actionCost);
+
+			searchMapID = MapID(mapID.x + 1, mapID.y );
+			MapSearch(searchMapID, actionCost);
+
+			searchMapID = MapID(mapID.x, mapID.y + 1);
+			MapSearch(searchMapID, actionCost);
+		}
+	}
+
+	void GameStage::MapSearch(MapID mapID, int actionCost) {
+		if (mapID.mapPos.x < 0 || mapID.y < 0 ||
+			mapID.x >= m_mapData[0].size() || mapID.y >= m_mapData.size()) {
+			return;
+		}
+
+		if (actionCost <= m_mapData[mapID.y][mapID.x].nowMapCost) {
+			return;
+		}
+		
+		//�R�X�g�}�b�v���X�V����Ă���Ȃ�}�b�vID��ǉ����Ȃ�
+		if (0 < m_mapData[mapID.y][mapID.x].nowMapCost){
+			m_mapData[mapID.y][mapID.x].nowMapCost = actionCost;
+			MapSearch4(mapID, actionCost);
+			return;
+		}
+
+		actionCost = actionCost + m_mapData[mapID.y][mapID.x].nowMapCost;
+
+		if (actionCost > 0) {
+			m_mapData[mapID.y][mapID.x].nowMapCost = actionCost;
+			m_canActionMapID.push_back(mapID);
+			MapSearch4(mapID, actionCost);
+		}
+		else {
+			actionCost = 0;
+		}
+	}
+
+	void GameStage::ResetCanActionMapID() {
+		for each (auto mapData in m_mapData)
+		{
+			mapData[0].nowMapCost = mapData[0].defaultMapCost;
+		}
+
+		m_canActionMapID.clear();
+	}
+
+	void GameStage::SettingMoveCostMap() {
+		for (int i = 0; i < m_charactorMapID.size(); i++) {
+			for (int j = 0; j < m_charactorMapID[i].size(); j++) {
+
+			}
+		}
+
+		auto moveCost = m_charactorData[m_playerTurnNum][m_choiceCharactorID].MoveRange;
+		MessageBox(0, L"�}�b�v�R�X�g�쐬", L"�}�b�v", 0);
+		CreateCanAcionMapID(moveCost);
+		m_gameStateNum = eGameStateNum::choiceMap;
+
+		MessageBox(0, L"�ړ��͈�", L"����", 0);
+		for (int i = 0; i < m_canActionMapID.size(); i++) {
+			auto objData = ObjectData(
+				Vec3(m_mapData[m_canActionMapID[i].mapPos.y][m_canActionMapID[i].mapPos.x].mapPos.x, m_mapData[m_canActionMapID[i].mapPos.y][m_canActionMapID[i].mapPos.x].mapPos.y, 0.0f),
+				Vec3(0.0f), Vec3(0.5f), 2, L"thumbnail.png");
+			AddGameObject<ObjectBase>(objData);
+		}
+	}
+
+	void GameStage::SettingAttackCostMap() {
+		for (int i = 0; i < m_charactorMapID.size(); i++) {
+			for (int j = 0; j < m_charactorMapID[i].size(); j++) {
+				if (m_charactorMapID[i][j].x == m_choiceMapID.x &&
+					m_charactorMapID[i][j].y == m_choiceMapID.y) {
+					//�I��ł��Ȃ�
+					return;
+				}
+			}
+		}
+		auto moveCost = m_charactorData[m_playerTurnNum][m_choiceCharactorID].MoveRange;
+		CreateCanAcionMapID(moveCost);
+		m_gameStateNum = eGameStateNum::choiceEnemy;
+
+		for (int i = 0; i < m_canActionMapID.size(); i++) {
+			auto objData = ObjectData(
+				Vec3(m_canActionMapID[i].mapPos.x, m_canActionMapID[i].mapPos.y, 0.0f),
+				Vec3(0.0f), Vec3(0.5f), 0, L"thumbnail.png");
+			AddGameObject<ObjectBase>(objData);
+		}
+	}
 }
 //end basecross

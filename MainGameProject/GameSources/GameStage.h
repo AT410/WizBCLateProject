@@ -8,7 +8,6 @@
 using namespace structdata;
 
 namespace basecross {
-
 	//--------------------------------------------------------------------------------------
 	//	ゲームステージクラス
 	//--------------------------------------------------------------------------------------
@@ -54,8 +53,33 @@ namespace basecross {
 		int GetMaxPlayerNum() { return m_maxPlayerNum; };
 		void SetCharactorMapID(vector<vector<MapID>> mapID) { m_charactorMapID = mapID; };
 		MapID GetCharactorMapID(int playerID, int playerNum) { return m_charactorMapID[playerID][playerNum]; };
+		unsigned int GetGameStateNum() { return m_gameStateNum; };
+		void SetChoiceMapID(MapID choiceID) { m_choiceMapID = choiceID; };
 
 		void UpDateCameraPos(Vec2 at);
+
+		void ChangeGameStateNum(eGameStateNum gameState);
+
+		void ConfirmationCharacter();
+		//移動できるか確認する
+		void ConfirmationMove();
+
+		void ConfirmationAttack();
+
+		void SerchCharactor(int playerNum);
+
+		void CreateCanAcionMapID(int actionCost);
+		//
+		void MapSearch4(MapID mapID, int actionCost);
+		//マップをサーチする
+		void MapSearch(MapID mapID, int actionCost);
+		//書き換えたマップコストをリセットする
+		void ResetCanActionMapID();
+
+		void SettingMoveCostMap();
+
+		void SettingAttackCostMap();
+
 	};
 
 
