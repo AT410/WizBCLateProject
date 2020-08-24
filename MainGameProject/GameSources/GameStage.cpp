@@ -48,10 +48,13 @@ namespace basecross {
 			CreateViewLight();
 
 			auto charaObjData = structdata::ObjectData(Vec3(0.0f), Vec3(1.0f), Vec3(0.0f),0, L"thumbnail.png");
+			auto uiData = structdata::UIData(Vec2(0.0f), Vec3(0.0f), Vec2(150.0f, 200.0f), Vec2(0.0f, 1.0f), 5, L"menu.png");
 
 			//•`‰æ‚ÌŠm”F—p‚É‰æ‘œ‚ğ¶¬
 			AddGameObject<ObjectBase>(charaObjData);
+
 			AddGameObject<MapCreator>();
+			AddGameObject<UIMainCommand>(uiData);
 		}
 		catch (...) {
 			throw;
@@ -79,8 +82,8 @@ namespace basecross {
 			if (m_charactorMapID[m_playerTurnNum][i].mapPos == m_choiceMapID.mapPos) {
 				m_choiceCharactorID = i;
 				//m_charactorCommandData;
-				MessageBox(0, L"ï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½Nï¿½^ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", L"ï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½Nï¿½^ï¿½[ï¿½Ôï¿½ï¿½F"+ i, 0);
-				//ï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½Nï¿½^ï¿½[ï¿½ÌƒRï¿½}ï¿½ï¿½ï¿½hï¿½Iï¿½ï¿½ï¿½Ô‚É‚ï¿½ï¿½ï¿½
+				MessageBox(0, L"E½LE½E½E½E½E½NE½^E½[E½E½E½E½E½E½", L"E½LE½E½E½E½E½NE½^E½[E½Ôï¿½E½F"+ i, 0);
+				//E½LE½E½E½E½E½NE½^E½[E½ÌƒRE½}E½E½E½hE½IE½E½E½Ô‚É‚ï¿½E½E½
 				SettingMoveCostMap();
 				return;
 			}
@@ -111,7 +114,7 @@ namespace basecross {
 	void GameStage::SerchCharactor(int playerNum) {
 		for (int i = 0; i < m_charactorMapID[playerNum].size(); i++) {
 			if (m_choiceMapID.mapPos == m_charactorMapID[playerNum][i].mapPos) {
-				//ï¿½Uï¿½ï¿½ï¿½Â”\
+				//E½UE½E½E½Â”\
 				m_charactorCommandData[m_playerTurnNum][m_choiceCharactorID].isAttacked = true;
 			}
 		}
@@ -150,7 +153,7 @@ namespace basecross {
 			return;
 		}
 		
-		//ï¿½Rï¿½Xï¿½gï¿½}ï¿½bï¿½vï¿½ï¿½ï¿½Xï¿½Vï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½È‚ï¿½}ï¿½bï¿½vIDï¿½ï¿½Ç‰ï¿½ï¿½ï¿½ï¿½È‚ï¿½
+		//E½RE½XE½gE½}E½bE½vE½E½E½XE½VE½E½E½E½Ä‚ï¿½E½E½È‚ï¿½}E½bE½vIDE½E½Ç‰ï¿½E½E½E½È‚ï¿½
 		if (0 < m_mapData[mapID.y][mapID.x].nowMapCost){
 			m_mapData[mapID.y][mapID.x].nowMapCost = actionCost;
 			MapSearch4(mapID, actionCost);
@@ -186,11 +189,11 @@ namespace basecross {
 		}
 
 		auto moveCost = m_charactorData[m_playerTurnNum][m_choiceCharactorID].MoveRange;
-		MessageBox(0, L"ï¿½}ï¿½bï¿½vï¿½Rï¿½Xï¿½gï¿½ì¬", L"ï¿½}ï¿½bï¿½v", 0);
+		MessageBox(0, L"E½}E½bE½vE½RE½XE½gE½E¬", L"E½}E½bE½v", 0);
 		CreateCanAcionMapID(moveCost);
 		m_gameStateNum = eGameStateNum::choiceMap;
 
-		MessageBox(0, L"ï¿½Ú“ï¿½ï¿½Íˆï¿½", L"ï¿½ï¿½ï¿½ï¿½", 0);
+		MessageBox(0, L"E½Ú“ï¿½E½Íˆï¿½", L"E½E½E½E½", 0);
 		for (int i = 0; i < m_canActionMapID.size(); i++) {
 			auto objData = ObjectData(
 				Vec3(m_mapData[m_canActionMapID[i].mapPos.y][m_canActionMapID[i].mapPos.x].mapPos.x, m_mapData[m_canActionMapID[i].mapPos.y][m_canActionMapID[i].mapPos.x].mapPos.y, 0.0f),
@@ -204,7 +207,7 @@ namespace basecross {
 			for (int j = 0; j < m_charactorMapID[i].size(); j++) {
 				if (m_charactorMapID[i][j].x == m_choiceMapID.x &&
 					m_charactorMapID[i][j].y == m_choiceMapID.y) {
-					//ï¿½Iï¿½ï¿½Å‚ï¿½ï¿½È‚ï¿½
+					//E½IE½E½Å‚ï¿½E½È‚ï¿½
 					return;
 				}
 			}
