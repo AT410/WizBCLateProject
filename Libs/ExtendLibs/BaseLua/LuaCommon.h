@@ -12,3 +12,6 @@
 #pragma comment(lib,"liblua54.a")
 
 #include "LuaApp.h"
+
+// -- ヘルパークラス --
+#include "LuaHelper.h"

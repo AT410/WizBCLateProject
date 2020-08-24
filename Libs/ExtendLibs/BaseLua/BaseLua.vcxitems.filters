@@ -15,9 +15,15 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)LuaCommon.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)LuaHelper.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)LuaApp.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)LuaHelper.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
   </ItemGroup>

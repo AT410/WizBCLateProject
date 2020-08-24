@@ -16,8 +16,10 @@
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)LuaApp.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)LuaCommon.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)LuaHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)LuaApp.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)LuaHelper.cpp" />
   </ItemGroup>
 </Project>

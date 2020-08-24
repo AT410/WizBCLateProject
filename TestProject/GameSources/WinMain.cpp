@@ -184,6 +184,19 @@ int MainLoop(HINSTANCE hInstance, HWND hWnd, bool isFullScreen, int iClientWidth
 		}
 		RetCode = 1;
 	}
+	catch (BaseLua::LuaException& e)
+	{
+		if (GetWindowInfo(hWnd, &WinInfo)) {
+			//実行失敗した
+			MessageBox(hWnd, e.what_w().c_str(), L"エラー", MB_OK);
+		}
+		else {
+			//実行失敗した
+			MessageBox(nullptr, e.what_w().c_str(), L"エラー", MB_OK);
+		}
+		RetCode = 1;
+
+	}
 	catch (exception& e) {
 		//STLエラー
 		//マルチバイトバージョンのメッセージボックスを呼ぶ
