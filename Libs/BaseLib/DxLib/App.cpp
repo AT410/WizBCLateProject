@@ -1226,7 +1226,12 @@ namespace basecross {
 		if (!movie::IsMovieActive()) {
 			//ムービーが無効
 			m_SceneInterface->OnDraw();
+
+			// -- ImGuiを使用しない場合は呼ばれない --
+			#ifdef _BSImGui
 			ImApp::GetApp()->OnUpdate();
+			#endif // _BSImGui
+
 			// バックバッファからフロントバッファに転送
 			m_DeviceResources->Present(SyncInterval, 0);
 		}

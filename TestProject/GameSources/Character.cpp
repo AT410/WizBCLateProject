@@ -17,12 +17,10 @@ namespace basecross{
 	int l_Add(lua_State* state)
 	{
 		//第1引数 intとして取得
-		int x = luaL_checkinteger(state, -2);
+		lua_Integer x = luaL_checkinteger(state, -2);
 		//第2引数
-		int y = luaL_checkinteger(state, -1);
-		int result = x + y;
-
-		printf("%d + %d を計算します\n", x, y);
+		lua_Integer y = luaL_checkinteger(state, -1);
+		lua_Integer result = x + y;
 
 		//戻り値をスタックに積む
 		lua_pushnumber(state, result);
@@ -31,11 +29,18 @@ namespace basecross{
 
 	void Test::OnCreate()
 	{
-		luaL_openlibs(m_state);
+		BaseLua::LuaApp::CreateApp();
+		BaseLua::LuaApp::GetApp()->CreateState(L"TEST");
 
-		//l_add関数をadd関数としてLuaに登録
-		lua_register(m_state, "add", l_Add);
-		lua_register(m_state, "Edit", luaTest::lGenerateEdit);
+		BaseLua::LuaApp::GetApp()->SetFunction(L"TEST", "add", l_Add);
+		BaseLua::LuaApp::GetApp()->SetFunction(L"TEST", "Edit", luaTest::lGenerateEdit);
+
+
+		//luaL_openlibs(m_state);
+
+		////l_add関数をadd関数としてLuaに登録
+		//lua_register(m_state, "add", l_Add);
+		//lua_register(m_state, "Edit", luaTest::lGenerateEdit);
 
 		// Luaファイルを開いて読み込み
 		// これでLuaステートに関数が登録されます
@@ -46,29 +51,39 @@ namespace basecross{
 
 		path += "test.lua";
 
-		if (luaL_dofile(m_state, path.c_str()))
-		{
-			printf("%s\n", lua_tostring(m_state, lua_gettop(m_state)));
-			lua_close(m_state);
-			return;
-		}
+		BaseLua::LuaApp::GetApp()->DoFileFunction(path);
+		//if (luaL_dofile(m_state, path.c_str()))
+		//{
+		//	printf("%s\n", lua_tostring(m_state, lua_gettop(m_state)));
+		//	lua_close(m_state);
+		//	return;
+		//}
 
 		//lua_pushboolean(m_state, 1);
 		//lua_pushnumber(m_state, 100.0);
 		//lua_pushstring(m_state, "Marupeke");
 		
-		// 関数を呼ぶためにスタックに値を積む
-		lua_getglobal(m_state, "Calc"); // 関数名を積む
-		lua_pushnumber(m_state, 1); // 第 1 引数の値を積む
-		lua_pushnumber(m_state, 1); // 第 2 引数
+		shared_ptr<BaseLua::LuaFuncParam> param = make_shared<BaseLua::LuaFuncParam>();
+		param->Clear();
+		param->SetNumber(1)->SetNumber(1);
 
-		// 関数を呼ぶ. 引数 (二つ), 戻り値 (一つ).
-		lua_call(m_state, 2, 1);
+		shared_ptr<BaseLua::LuaFuncParam> result = make_shared<BaseLua::LuaFuncParam>();
+		result->Clear();
 
-		// 関数の結果を得る
-		int n = lua_tointeger(m_state, -1);
-		lua_pop(m_state, 1);
-		
+		BaseLua::LuaApp::GetApp()->CallFunction("Calc", param, 1, result);
+
+		//// 関数を呼ぶためにスタックに値を積む
+		//lua_getglobal(m_state, "Calc"); // 関数名を積む
+		//lua_pushnumber(m_state, 1); // 第 1 引数の値を積む
+		//lua_pushnumber(m_state, 1); // 第 2 引数
+
+		//// 関数を呼ぶ. 引数 (二つ), 戻り値 (一つ).
+		//lua_call(m_state, 2, 1);
+
+		//// 関数の結果を得る
+		//int n = lua_tointeger(m_state, -1);
+		//lua_pop(m_state, 1);
+		int n = result->GetItems()[0].GetNumber();
 		MessageBox(0, Util::IntToWStr(n).c_str(), 0, 0);
 	}
 

@@ -84,13 +84,6 @@ using namespace std;
 // XInput includes
 #include <xinput.h>
 
-#include <lua.hpp>
-//TODO
-//#include <d3dcompiler.h>
-//#ifdef _MSC_VER
-//#pragma comment(lib, "d3dcompiler") // Automatically link with d3dcompiler.lib as we are using D3DCompile() below.
-//#endif
-
 #pragma comment( lib, "d3d11.lib" )
 #pragma comment( lib, "d2d1.lib" )
 #pragma comment( lib, "dwrite.lib" )
@@ -131,8 +124,15 @@ using namespace Microsoft::WRL::Details;
 
 #include "../../Libs/BaseLib/Dx11Lib/Common.h"
 #include "../../Libs/BaseLib/Dx11FullLib/FullCommon.h"
-#include "../../ExtendLibs/ImGui/ImCommon.h"
 using namespace basecross::bsm;
+
+// -- ImGuiëgÇ›çûÇ› --
+#define _BSImGui
+#include "../../ExtendLibs/ImGui/ImCommon.h"
+
+// -- LUAëgÇ›çûÇ› --
+#define _BaseLua
+#include "../../ExtendLibs/BaseLua/LuaCommon.h"
 
 #include "resource.h"
 
