@@ -2,9 +2,19 @@
 #include "stdafx.h"
 
 namespace basecross {
+	enum eGameStateNum {
+		choicePlayer,
+		choiceAction,
+		choiceWeapon,
+		choiceMap,
+		choiceEnemy,
+		turnEnd,
+	};
+
 	class MapCursor : public ObjectBase
 	{
-		//shared_ptr<GameStage> m_gameStage;
+		InputHandler<MapCursor> m_handler;
+
 		shared_ptr<Transform> m_cursorTrans;
 		vector<vector<MapData>> m_mapData;
 		MapID m_choiceMapID;

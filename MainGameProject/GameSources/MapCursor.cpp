@@ -8,9 +8,9 @@
 
 namespace basecross {
 	MapCursor::MapCursor(const shared_ptr<Stage>& stage,
-		ObjectData objdata):
+		ObjectData objdata) :
 		ObjectBase(stage, objdata)
-		
+
 	{
 		m_maxMoveTime = 0.3;
 	}
@@ -26,6 +26,7 @@ namespace basecross {
 	}
 
 	void MapCursor::OnUpdate() {
+		m_handler.PushHandle(GetThis<MapCursor>());
 		MoveCursor();
 	}
 
@@ -33,19 +34,21 @@ namespace basecross {
 		unsigned int playerNum = 0;
 		auto contr = App::GetApp()->GetInputDevice().GetControlerVec()[playerNum];
 		float inputSticNum = 0.8f;
-		bool isInputStic = 
+		bool isInputStic =
 			contr.fThumbLX >= inputSticNum || contr.fThumbLX <= -inputSticNum ||
 			contr.fThumbLY >= inputSticNum || contr.fThumbLY <= -inputSticNum;
-		bool isInputButton = 
+		bool isInputButton =
 			contr.wPressedButtons & XINPUT_GAMEPAD_DPAD_UP || contr.wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN ||
 			contr.wPressedButtons & XINPUT_GAMEPAD_DPAD_RIGHT || contr.wPressedButtons & XINPUT_GAMEPAD_DPAD_LEFT;
 
-		if (isInputStic || isInputButton)
-		{
-			InputStic();
-		}
-		else {
-			m_moveTimer = 0;
+		if (GetTypeStage<GameStage>()->GetGameStateNum() != (int)eGameStateNum::choiceAction) {
+			if (isInputStic || isInputButton)
+			{
+				InputStic();
+			}
+			else {
+				m_moveTimer = 0;
+			}
 		}
 	}
 
@@ -94,6 +97,23 @@ namespace basecross {
 				m_choiceMapID = MapID(mapIDX, mapIDY);
 				m_isMoveCursor = false;
 			}
+		}
+	}
+
+	void MapCursor::PushA() {
+		if (GetTypeStage<GameStage>()->GetGameStateNum() == (int)eGameStateNum::choicePlayer) {
+			GetTypeStage<GameStage>()->SetChoiceMapID(m_choiceMapID);
+			GetTypeStage<GameStage>()->ConfirmationCharacter();
+		}
+
+		if (GetTypeStage<GameStage>()->GetGameStateNum() == (int)eGameStateNum::choiceMap) {
+			GetTypeStage<GameStage>()->SetChoiceMapID(m_choiceMapID);
+			GetTypeStage<GameStage>()->ConfirmationMove();
+		}
+
+		if (GetTypeStage<GameStage>()->GetGameStateNum() == (int)eGameStateNum::choiceEnemy) {
+			GetTypeStage<GameStage>()->SetChoiceMapID(m_choiceMapID);
+			GetTypeStage<GameStage>()->ConfirmationAttack();
 		}
 	}
 }
