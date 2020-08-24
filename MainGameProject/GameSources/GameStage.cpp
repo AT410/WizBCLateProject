@@ -51,6 +51,7 @@ namespace basecross {
 
 			//•`‰æ‚ÌŠm”F—p‚É‰æ‘œ‚ğ¶¬
 			AddGameObject<ObjectBase>(charaObjData);
+			AddGameObject<MapCreator>();
 		}
 		catch (...) {
 			throw;

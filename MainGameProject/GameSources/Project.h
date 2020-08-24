@@ -15,6 +15,8 @@
 #include "UIBase.h"
 
 #include "MapCursor.h"
+#include "MapCreator.h"
+
 #include "GameStage.h"
 #include "Character.h"
 #include "Player.h"
