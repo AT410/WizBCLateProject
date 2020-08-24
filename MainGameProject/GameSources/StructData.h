@@ -44,9 +44,34 @@ namespace structdata {
 	struct MapID
 	{
 		int x, y;
+		Vec2 mapPos;
 		MapID(){}
 		MapID(int x, int y):
-			x(x),y(y)
+			x(x),y(y), mapPos((float)x,(float)y)
 		{}
+	};
+
+	struct CharactorData
+	{
+		unsigned int charaID, jobID, Lv, Exp, HP, Pow, Def, MoveRange, AttackRange;
+
+		CharactorData() {}
+		CharactorData(int charaID, int jobID, int Lv, int Exp, int HP, int Pow, int Def, int MoveRenge, int AttackRange):
+			charaID(charaID), jobID(jobID), Lv(Lv), Exp(Exp), HP(HP), Pow(Pow), Def(Def), MoveRange(MoveRenge), AttackRange(AttackRange)
+		{};
+	};
+
+	struct CharactorCommandData
+	{
+		bool isAttacked, isMoved, isWaiting;
+
+		CharactorCommandData() {}
+		CharactorCommandData(bool isAttacked, bool isMoved, bool isWaiting):
+		isAttacked(isAttacked), isMoved(isMoved), isWaiting(isWaiting) {}
+	};
+
+	struct LevelUPBonus
+	{
+
 	};
 }
