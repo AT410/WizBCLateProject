@@ -17,6 +17,15 @@ namespace basecross {
 		shared_ptr<Camera> m_ptrCamera;
 		vector<vector<MapData>> m_mapData;
 		vector<vector<MapID>> m_charactorMapID;
+		vector<MapID> m_canActionMapID;
+		vector <vector<CharactorData>> m_charactorData;
+		vector<vector<CharactorCommandData>> m_charactorCommandData;
+
+		MapID m_choiceMapID;
+
+		unsigned int m_gameStateNum;
+		unsigned int m_playerTurnNum;
+		unsigned int m_choiceCharactorID;
 		int m_maxPlayerNum;
 		float time;
 		//ƒrƒ…[‚Ìì¬
