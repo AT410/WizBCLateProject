@@ -69,6 +69,13 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ObjectBase.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)EnumData.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)UIAttackCommand.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)UIAttackCommandContent.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)UIAttackCommandCursor.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)UICommandContent.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)UIMainCommand.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)UIMainCommandCursor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)ProjectShader.cpp">
@@ -98,5 +105,11 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ObjectBase.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)UIAttackCommand.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)UIAttackCommandContent.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)UIAttackCommandCursor.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)UICommandContent.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)UIMainCommand.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)UIMainCommandCursor.cpp" />
   </ItemGroup>
 </Project>

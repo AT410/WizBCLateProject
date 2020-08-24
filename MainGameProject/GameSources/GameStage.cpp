@@ -48,9 +48,11 @@ namespace basecross {
 			CreateViewLight();
 
 			auto charaObjData = structdata::ObjectData(Vec3(0.0f), Vec3(1.0f), Vec3(0.0f),0, L"thumbnail.png");
+			auto uiData = structdata::UIData(Vec2(0.0f), Vec3(0.0f), Vec2(150.0f, 200.0f), Vec2(0.0f, 1.0f), 5, L"menu.png");
 
 			//•`‰æ‚ÌŠm”F—p‚É‰æ‘œ‚ğ¶¬
 			AddGameObject<ObjectBase>(charaObjData);
+			AddGameObject<UIMainCommand>(uiData);
 		}
 		catch (...) {
 			throw;
