@@ -7,8 +7,8 @@
 #include "Project.h"
 
 namespace basecross{
-	TestCube::TestCube(const shared_ptr<Stage>& StagePtr)
-		:GameObject(StagePtr)
+	TestCube::TestCube(const shared_ptr<Stage>& StagePtr,const string& name)
+		:GameObject(StagePtr),m_name(name)
 	{
 	}
 

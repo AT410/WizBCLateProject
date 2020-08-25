@@ -59,8 +59,31 @@ namespace basecross{
 		void OnInit()override;
 
 		void OnGUI()override;
+
+		void ChangeTarget(const shared_ptr<TestCube>& obj)
+		{
+			m_Target = obj;
+		}
+
 	private:
 		weak_ptr<TestCube> m_Target;
+	};
+
+	class ObjOwner :public ImGuiObject
+	{
+	public:
+		ObjOwner(const shared_ptr<ObjGui>& obj) 
+		{
+			m_wiget = obj;
+		}
+
+		void OnInit()override;
+
+		void OnGUI()override;
+
+	private:
+		int m_objCount;
+		weak_ptr<ObjGui> m_wiget;
 	};
 
 	class Test : public GameObject

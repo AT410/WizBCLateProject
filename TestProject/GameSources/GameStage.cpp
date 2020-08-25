@@ -35,9 +35,14 @@ namespace basecross {
 			AddGameObject<Test>();
 			AddGameObject<DebugTest>();
 
-			auto obj = AddGameObject<TestCube>();
-			ImApp::GetApp()->AddImGuiObject<ObjGui>(obj);
+			AddGameObject<TestCube>(u8"テスト1");
+			AddGameObject<TestCube>(u8"テスト2");
+			AddGameObject<TestCube>(u8"テスト3");
+			AddGameObject<TestCube>(u8"テスト4");
+			auto obj = AddGameObject<TestCube>(u8"テスト5");
+			auto wg = ImApp::GetApp()->AddImGuiObject<ObjGui>(obj);
 			ImApp::GetApp()->AddImGuiObject<TestGui>(u8"TEST1");
+			ImApp::GetApp()->AddImGuiObject<ObjOwner>(wg);
 		}
 		catch (...) {
 			throw;

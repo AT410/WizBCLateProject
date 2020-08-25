@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 
+#ifdef _BSImGui
 namespace basecross
 {
 	class ImGuiObject
@@ -65,3 +66,4 @@ namespace basecross
 		}
 	};
 }
+#endif // !_BSImGui

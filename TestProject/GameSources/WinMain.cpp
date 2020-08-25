@@ -137,7 +137,10 @@ int MainLoop(HINSTANCE hInstance, HWND hWnd, bool isFullScreen, int iClientWidth
 		}
 		////アプリケーションクラスの構築
 		App::CreateApp(hInstance, hWnd, isFullScreen, iClientWidth, iClientHeight);
-		ImApp::CreateApp(hWnd);
+
+	#ifdef _BSImGui
+		ImApp::CreateApp(hWnd,20);
+	#endif
 		//シーンの作成
 		//戻り値のScenePtrは汎用的に使える
 		auto ScenePtr = App::GetApp()->CreateScene<Scene>();
@@ -220,7 +223,11 @@ int MainLoop(HINSTANCE hInstance, HWND hWnd, bool isFullScreen, int iClientWidth
 	}
 	//アプリケーションの削除
 	App::DeleteApp();
+
+#ifdef _BSImGui
 	ImApp::DeleteApp();
+#endif // _BSImGui
+
 	//例外処理終了
 	//COMのリリース
 	::CoUninitialize();
@@ -288,8 +295,10 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg
 //--------------------------------------------------------------------------------------
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+#ifdef _BSImGui
 	if (ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam))
 		return true;
+#endif // _BSImGui
 
 	PAINTSTRUCT ps;
 	HDC hdc;

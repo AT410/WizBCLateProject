@@ -12,7 +12,7 @@ namespace basecross{
 	{
 	public:
 		//-- \’z --
-		TestCube(const shared_ptr<Stage>& StagePtr);
+		TestCube(const shared_ptr<Stage>& StagePtr,const string& name);
 
 		//-- ”jŠü --
 		virtual ~TestCube() {}
@@ -27,8 +27,10 @@ namespace basecross{
 
 		Col4 GetMeshCol();
 
-	private:
+		string GetName() { return  m_name; }
 
+	private:
+		string m_name;
 	};
 
 }

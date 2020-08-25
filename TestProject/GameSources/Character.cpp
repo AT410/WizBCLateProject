@@ -243,5 +243,45 @@ namespace basecross{
 
 		ImGui::End();
 	}
+
+	void ObjOwner::OnInit()
+	{
+
+	}
+
+	void ObjOwner::OnGUI()
+	{
+		ImGui::Begin(u8"オブジェクトオーナー");
+		ImGui::Text("Manually wrapping:");
+		ImGuiStyle& style = ImGui::GetStyle();
+		float window_visible_x2 = ImGui::GetWindowPos().x + ImGui::GetWindowContentRegionMax().x;
+		ImVec2 button_sz(60, 40);
+
+		auto objvec = App::GetApp()->GetScene<Scene>()->GetActiveStage()->GetGameObjectVec();
+
+		for (int n = 0; n < objvec.size(); n++)
+		{
+			auto test = dynamic_pointer_cast<TestCube>(objvec[n]);
+			if (test)
+			{
+				ImGui::PushID(n);
+				if (ImGui::Button(test->GetName().c_str(), button_sz))
+				{
+					auto window = m_wiget.lock();
+					if (window)
+					{
+						window->ChangeTarget(test);
+					}
+				}
+				float last_button_x2 = ImGui::GetItemRectMax().x;
+				float next_button_x2 = last_button_x2 + style.ItemSpacing.x + button_sz.x; // Expected position if next button was on same line
+				if (n + 1 < objvec.size() && next_button_x2 < window_visible_x2)
+					ImGui::SameLine();
+				ImGui::PopID();
+			}
+		}
+
+		ImGui::End();
+	}
 }
 //end basecross
