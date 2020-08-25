@@ -138,7 +138,7 @@ int MainLoop(HINSTANCE hInstance, HWND hWnd, bool isFullScreen, int iClientWidth
 		App::CreateApp(hInstance, hWnd, isFullScreen, iClientWidth, iClientHeight);
 
 		// -- リリース及び最終版では作成されない --
-		#ifndef _BSImGui
+		#ifdef _BSImGui
 		ImApp::CreateApp(hWnd);
 		#endif // !_BSImGui
 
@@ -211,7 +211,10 @@ int MainLoop(HINSTANCE hInstance, HWND hWnd, bool isFullScreen, int iClientWidth
 	}
 	//アプリケーションの削除
 	App::DeleteApp();
+#ifdef _BSImGui
 	ImApp::DeleteApp();
+#endif // _BSImGui
+
 	//例外処理終了
 	//COMのリリース
 	::CoUninitialize();
@@ -260,6 +263,9 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 
 }
 
+#ifdef _BSImGui
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+#endif // _BSImGui
 
 
 
@@ -276,6 +282,12 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 //--------------------------------------------------------------------------------------
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+#ifdef _BSImGui
+	if (ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam))
+		return true;
+#endif // _BSImGui
+
+
 	PAINTSTRUCT ps;
 	HDC hdc;
 	switch (message)
