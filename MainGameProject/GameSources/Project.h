@@ -11,7 +11,6 @@
 #include "StructData.h"
 #include "EnumData.h"
 #include "Scene.h"
-#include "GameStage.h"
 
 #include "ObjectBase.h"
 #include "UIBase.h"
@@ -19,7 +18,6 @@
 #include "MapCursor.h"
 #include "MapCreator.h"
 
-#include "GameStage.h"
 #include "Character.h"
 #include "Player.h"
 #include "UIAttackCommandContent.h"
@@ -28,5 +26,7 @@
 #include "UICommandContent.h"
 #include "UIMainCommandCursor.h"
 #include "UIMainCommand.h"
+
+#include "GameStage.h"
 
 
