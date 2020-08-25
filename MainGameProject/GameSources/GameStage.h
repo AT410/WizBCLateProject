@@ -6,6 +6,7 @@
 #pragma once
 #include "stdafx.h"
 using namespace structdata;
+using namespace enumdata;
 
 namespace basecross {
 	//--------------------------------------------------------------------------------------
@@ -14,6 +15,8 @@ namespace basecross {
 	class GameStage : public Stage {
 
 		shared_ptr<Camera> m_ptrCamera;
+		shared_ptr<UIMainCommand> m_ptrUIMainCommand;
+
 		vector<vector<MapData>> m_mapData;
 		vector<vector<MapID>> m_charactorMapID;
 		vector<MapID> m_canActionMapID;

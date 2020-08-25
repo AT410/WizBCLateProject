@@ -8,4 +8,14 @@ namespace enumdata {
 	// 攻撃コマンドの種類(武器)
 	enum AttackCommandContent{ Weapon1, Weapon2 };
 
+	//ゲームのステート用
+	enum eGameStateNum {
+		choicePlayer,	//プレイヤー選択
+		choiceAction,	//コマンド選択
+		choiceWeapon,	//武器選択
+		choiceMap,		//マップ選択
+		choiceEnemy,	//敵選択
+		turnEnd,		//ターンエンド
+	};
+
 }

@@ -6,6 +6,7 @@
 #pragma once
 #include "stdafx.h"
 using namespace structdata;
+using namespace enumdata;
 
 namespace basecross {
 	class ObjectBase : public GameObject {
