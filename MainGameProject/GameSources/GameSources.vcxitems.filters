@@ -37,6 +37,12 @@
     <Filter Include="Sources\UI">
       <UniqueIdentifier>{98f55ad5-75ea-4c60-9dac-450e43cf538f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headers\Creator">
+      <UniqueIdentifier>{46c2f28e-ccbf-4e6b-b649-c67294c791d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Creator">
+      <UniqueIdentifier>{d037269d-8acb-40f8-8a33-3d3665504e30}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Project.h">
@@ -60,14 +66,41 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Character.h">
       <Filter>Headers\Object</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)StructData.h">
-      <Filter>Headers</Filter>
+    <ClInclude Include="$(MSBuildThisFileDirectory)UIAttackCommand.h">
+      <Filter>Headers\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)UIAttackCommandContent.h">
+      <Filter>Headers\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)UIAttackCommandCursor.h">
+      <Filter>Headers\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)UICommandContent.h">
+      <Filter>Headers\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)UIMainCommand.h">
+      <Filter>Headers\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)UIMainCommandCursor.h">
+      <Filter>Headers\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)EnumData.h">
+      <Filter>Headers\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MapCursor.h">
+      <Filter>Headers\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MapCreator.h">
+      <Filter>Headers\Creator</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)UIBase.h">
-      <Filter>Headers</Filter>
+      <Filter>Headers\BaseObject</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)StructData.h">
+      <Filter>Headers\Data</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ObjectBase.h">
-      <Filter>Headers</Filter>
+      <Filter>Headers\BaseObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -92,11 +125,35 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)GameStage.cpp">
       <Filter>Sources\Stage</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)UIBase.cpp">
-      <Filter>Sources</Filter>
+    <ClCompile Include="$(MSBuildThisFileDirectory)UIAttackCommand.cpp">
+      <Filter>Sources\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)UIAttackCommandContent.cpp">
+      <Filter>Sources\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)UIAttackCommandCursor.cpp">
+      <Filter>Sources\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)UICommandContent.cpp">
+      <Filter>Sources\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)UIMainCommand.cpp">
+      <Filter>Sources\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)UIMainCommandCursor.cpp">
+      <Filter>Sources\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)MapCursor.cpp">
+      <Filter>Sources\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)MapCreator.cpp">
+      <Filter>Sources\Creator</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ObjectBase.cpp">
-      <Filter>Sources</Filter>
+      <Filter>Sources\BaseObject</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)UIBase.cpp">
+      <Filter>Sources\BaseObject</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

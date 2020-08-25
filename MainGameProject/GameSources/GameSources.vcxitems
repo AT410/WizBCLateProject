@@ -17,6 +17,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Character.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EnumData.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameStage.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MapCreator.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MapCursor.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ObjectBase.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Player.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Project.h" />
@@ -35,6 +37,8 @@
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameStage.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MapCreator.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MapCursor.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ObjectBase.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ProjectBehavior.cpp" />
