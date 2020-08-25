@@ -6,7 +6,7 @@ namespace basecross
 {
 	void SystemGui::OnInit()
 	{
-
+		m_selected = -1;
 	}
 
 	void SystemGui::OnGUI()
@@ -32,15 +32,47 @@ namespace basecross
 		auto stage = m_stage.lock();
 		if (stage)
 		{
-			ImGui::Text("UpdatePerformance\t%.3f ms", stage->GetUpdatePerformanceTime());
-			ImGui::Text("DrawPerformance\t%.3f ms", stage->GetDrawPerformanceTime());
-			ImGui::Text("CollisionPerform\t%.3f ms", stage->GetCollisionPerformanceTime());
-			ImGui::Text("ColMiscPerform\t%.3f ms", stage->GetCollisionManager()->GetMiscPerformanceTime());
-			ImGui::Text("CollisionCountOfTern\t%.3f ms", stage->GetCollisionManager()->GetCollisionCountOfTern());
-			ImGui::Text("ObjectCount\t%d", stage->GetGameObjectVec().size());
+			ImGui::Text(u8"更新速度\t%.3f ms", stage->GetUpdatePerformanceTime());
+			ImGui::Text(u8"描画速度\t%.3f ms", stage->GetDrawPerformanceTime());
+			ImGui::Text(u8"物理速度\t%.3f ms", stage->GetCollisionPerformanceTime());
+			ImGui::Text(u8"検証速度\t%.3f ms", stage->GetCollisionManager()->GetMiscPerformanceTime());
+			ImGui::Text(u8"判定速度\t%.3f ms", stage->GetCollisionManager()->GetCollisionCountOfTern());
+			ImGui::Text(u8"物体総数\t%d", stage->GetGameObjectVec().size());
 		}
 
+		// -- オブジェクト表示 --		
+		if (ImGui::TreeNode(u8"オブジェクトリスト"))
+		{
+			for (int n = 1; n < 5; n++)
+			{
+				if (ImGui::Selectable("Object", m_selected == n, ImGuiSelectableFlags_::ImGuiSelectableFlags_AllowDoubleClick))
+				{
+					if (m_selected == n)
+					{
+						m_selected = -1;
+					}
+					else
+					{
+						m_selected = n;
+					}
+
+				}
+			}
+
+			ImGui::TreePop();
+		}
+		
 		ImGui::End();
+	}
+
+	void ShowObjGui::OnInit()
+	{
+
+	}
+
+	void ShowObjGui::OnGUI()
+	{
+
 	}
 }
 #endif // _BSImGui
