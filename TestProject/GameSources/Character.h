@@ -8,6 +8,8 @@
 
 namespace basecross{
 
+	class TestCube;
+
 	class DebugTest : public GameObject
 	{
 	public:
@@ -41,7 +43,24 @@ namespace basecross{
 		void OnGUI()override;
 
 	private:
+		float f = 0.0f;
+		int counter = 0;
 		string m_key;
+	};
+
+	class ObjGui :public ImGuiObject
+	{
+	public:
+		ObjGui(shared_ptr<TestCube> obj) 
+		{
+			m_Target = obj;
+		}
+
+		void OnInit()override;
+
+		void OnGUI()override;
+	private:
+		weak_ptr<TestCube> m_Target;
 	};
 
 	class Test : public GameObject
@@ -58,13 +77,8 @@ namespace basecross{
 		//-- 更新処理 --
 		void OnUpdate()override;
 
-		void OnDestroy()override;
-
 		// -- グルーコード --
 		//int l_Add(lua_State* state);
-	private:
-		bool m_cosole;
-		lua_State *m_state;
 	};
 }
 //end basecross

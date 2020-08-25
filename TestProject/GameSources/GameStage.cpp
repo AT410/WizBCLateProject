@@ -35,7 +35,43 @@ namespace basecross {
 			AddGameObject<Test>();
 			AddGameObject<DebugTest>();
 
+			auto obj = AddGameObject<TestCube>();
+			ImApp::GetApp()->AddImGuiObject<ObjGui>(obj);
 			ImApp::GetApp()->AddImGuiObject<TestGui>(u8"TEST1");
+		}
+		catch (...) {
+			throw;
+		}
+	}
+
+	void GameStage::OnDestroy()
+	{
+		ImApp::GetApp()->RemoveAllImGuiObject();
+	}
+
+
+	void GameStage2::CreateViewLight() {
+		const Vec3 eye(0.0f, 5.0f, -5.0f);
+		const Vec3 at(0.0f);
+		auto PtrView = CreateView<SingleView>();
+		//ビューのカメラの設定
+		auto PtrCamera = ObjectFactory::Create<Camera>();
+		PtrView->SetCamera(PtrCamera);
+		PtrCamera->SetEye(eye);
+		PtrCamera->SetAt(at);
+		//マルチライトの作成
+		auto PtrMultiLight = CreateLight<MultiLight>();
+		//デフォルトのライティングを指定
+		PtrMultiLight->SetDefaultLighting();
+	}
+
+
+
+	void GameStage2::OnCreate() {
+		try {
+			//ビューとライトの作成
+			CreateViewLight();
+			AddGameObject<DebugTest>();
 		}
 		catch (...) {
 			throw;

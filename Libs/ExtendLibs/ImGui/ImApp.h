@@ -58,5 +58,10 @@ namespace basecross
 			}
 			return ptr;
 		}
+
+		void RemoveAllImGuiObject()
+		{
+			m_guiObjects.clear();
+		}
 	};
 }
