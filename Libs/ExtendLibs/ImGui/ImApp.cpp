@@ -1,5 +1,6 @@
 #include "stdafx.h"
 
+#ifdef _BSImGui
 namespace basecross
 {
 	unique_ptr<ImApp,ImApp::ImAppDeleter> ImApp::m_Instance;
@@ -104,3 +105,4 @@ namespace basecross
 		ImGui::DestroyContext();
 	}
 }
+#endif // !_BSImGui

@@ -9,9 +9,9 @@
 namespace basecross{
 
 	Test::Test(const shared_ptr<Stage>& StagePtr)
-		:GameObject(StagePtr),m_cosole(false)
+		:GameObject(StagePtr)
 	{
-		m_state = luaL_newstate();
+
 	}
 
 	int l_Add(lua_State* state)
@@ -90,16 +90,10 @@ namespace basecross{
 	void Test::OnUpdate()
 	{
 		auto key = App::GetApp()->GetInputDevice().GetKeyState();
-		if (key.m_bPressedKeyTbl[VK_RETURN]&&m_cosole)
+		if (key.m_bPressedKeyTbl[VK_SPACE])
 		{
-			FreeConsole();
-			m_cosole = false;
+			PostEvent(0.0f, GetThis<Test>(), App::GetApp()->GetScene<Scene>(), L"ToGameStage2");
 		}
-	}
-
-	void Test::OnDestroy()
-	{
-		lua_close(m_state);
 	}
 	
 	DebugTest::DebugTest(const shared_ptr<Stage>& StagePtr)
@@ -174,9 +168,6 @@ namespace basecross{
 
 		// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
 		{
-			static float f = 0.0f;
-			static int counter = 0;
-
 			ImGui::Begin(m_key.c_str());                          // Create a window called "Hello, world!" and append into it.
 
 			ImGui::Text(u8"This is some useful text.");               // Display some text (you can use a format strings too)
@@ -208,6 +199,89 @@ namespace basecross{
 		}
 
 		App::GetApp()->GetScene<SceneBase>()->SetClearColor(col);
+	}
+
+	void ObjGui::OnInit()
+	{
+
+	}
+
+	void ObjGui::OnGUI()
+	{
+		ImGui::Begin(u8"オブジェクトテスト");
+
+		auto obj = m_Target.lock();
+		if (obj == nullptr)
+		{
+			ImGui::Text(u8"オブジェクトリンク切れ");
+			return;
+		}
+		else
+		{
+			auto TransComp = obj->GetComponent<Transform>();
+			
+			auto pos = TransComp->GetPosition();
+			auto scal = TransComp->GetScale();
+			auto rot = TransComp->GetQuaternion();
+
+
+			ImGui::DragFloat3(u8"配置座標", (float*)&pos,0.01f); // Edit 3 floats representing a color
+			TransComp->SetPosition(pos);
+
+			ImGui::DragFloat4(u8"角度", (float*)&rot, 0.01f); // Edit 3 floats representing a color
+			TransComp->SetQuaternion(rot);
+
+			ImGui::DragFloat3(u8"スケール", (float*)&scal, 0.01f); // Edit 3 floats representing a color
+			TransComp->SetScale(scal);
+
+			auto col = obj->GetMeshCol();
+
+			ImGui::ColorEdit4(u8"MeshCol", (float*)&col);
+
+			obj->SetMeshCol(col);
+		}
+
+		ImGui::End();
+	}
+
+	void ObjOwner::OnInit()
+	{
+
+	}
+
+	void ObjOwner::OnGUI()
+	{
+		ImGui::Begin(u8"オブジェクトオーナー");
+		ImGui::Text("Manually wrapping:");
+		ImGuiStyle& style = ImGui::GetStyle();
+		float window_visible_x2 = ImGui::GetWindowPos().x + ImGui::GetWindowContentRegionMax().x;
+		ImVec2 button_sz(60, 40);
+
+		auto objvec = App::GetApp()->GetScene<Scene>()->GetActiveStage()->GetGameObjectVec();
+
+		for (int n = 0; n < objvec.size(); n++)
+		{
+			auto test = dynamic_pointer_cast<TestCube>(objvec[n]);
+			if (test)
+			{
+				ImGui::PushID(n);
+				if (ImGui::Button(test->GetName().c_str(), button_sz))
+				{
+					auto window = m_wiget.lock();
+					if (window)
+					{
+						window->ChangeTarget(test);
+					}
+				}
+				float last_button_x2 = ImGui::GetItemRectMax().x;
+				float next_button_x2 = last_button_x2 + style.ItemSpacing.x + button_sz.x; // Expected position if next button was on same line
+				if (n + 1 < objvec.size() && next_button_x2 < window_visible_x2)
+					ImGui::SameLine();
+				ImGui::PopID();
+			}
+		}
+
+		ImGui::End();
 	}
 }
 //end basecross

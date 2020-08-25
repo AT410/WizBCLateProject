@@ -136,7 +136,12 @@ int MainLoop(HINSTANCE hInstance, HWND hWnd, bool isFullScreen, int iClientWidth
 		}
 		////アプリケーションクラスの構築
 		App::CreateApp(hInstance, hWnd, isFullScreen, iClientWidth, iClientHeight);
+
+		// -- リリース及び最終版では作成されない --
+		#ifndef _BSImGui
 		ImApp::CreateApp(hWnd);
+		#endif // !_BSImGui
+
 		//シーンの作成
 		//戻り値のScenePtrは汎用的に使える
 		auto ScenePtr = App::GetApp()->CreateScene<Scene>();

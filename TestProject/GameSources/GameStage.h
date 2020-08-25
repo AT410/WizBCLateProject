@@ -20,6 +20,19 @@ namespace basecross {
 		virtual ~GameStage() {}
 		//‰Šú‰»
 		virtual void OnCreate()override;
+
+		void OnDestroy()override;
+	};
+
+	class GameStage2 : public Stage {
+		//ƒrƒ…[‚Ìì¬
+		void CreateViewLight();
+	public:
+		//\’z‚Æ”jŠü
+		GameStage2() :Stage() {}
+		virtual ~GameStage2() {}
+		//‰Šú‰»
+		virtual void OnCreate();
 	};
 
 
