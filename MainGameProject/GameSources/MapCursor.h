@@ -2,15 +2,6 @@
 #include "stdafx.h"
 
 namespace basecross {
-	enum eGameStateNum {
-		choicePlayer,
-		choiceAction,
-		choiceWeapon,
-		choiceMap,
-		choiceEnemy,
-		turnEnd,
-	};
-
 	class MapCursor : public ObjectBase
 	{
 		InputHandler<MapCursor> m_handler;
