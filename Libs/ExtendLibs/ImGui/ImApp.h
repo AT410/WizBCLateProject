@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 
+#ifdef _BSImGui
 namespace basecross
 {
 	class ImGuiObject
@@ -58,5 +59,11 @@ namespace basecross
 			}
 			return ptr;
 		}
+
+		void RemoveAllImGuiObject()
+		{
+			m_guiObjects.clear();
+		}
 	};
 }
+#endif // !_BSImGui
