@@ -16,7 +16,7 @@ namespace basecross {
 	}
 
 	void MapCursor::OnCreate() {
-		DrawingImage(L"thumbnail.png");
+		DrawingImage(L"tx_Cursor.png");
 		InitializeTransfrom();
 		m_cursorTrans = GetComponent<Transform>();
 
