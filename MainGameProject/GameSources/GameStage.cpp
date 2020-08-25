@@ -55,6 +55,11 @@ namespace basecross {
 
 			AddGameObject<MapCreator>();
 			AddGameObject<UIMainCommand>(uiData);
+
+#ifdef _BSImGui
+			ImApp::GetApp()->AddImGuiObject<SystemGui>();
+#endif // _BSImGui
+
 		}
 		catch (...) {
 			throw;
