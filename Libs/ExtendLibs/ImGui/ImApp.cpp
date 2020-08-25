@@ -30,7 +30,7 @@ namespace basecross
 		ImFontConfig config;
 		config.MergeMode = true;
 		io.Fonts->AddFontDefault();
-		io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\meiryo.ttc", 18.0f, &config, io.Fonts->GetGlyphRangesJapanese());
+		io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\meiryo.ttc", 24.0f, &config, io.Fonts->GetGlyphRangesJapanese());
 
 		m_maxImCount = MaxImCount > 0 ? MaxImCount : 1;
 		m_guiObjects.clear();

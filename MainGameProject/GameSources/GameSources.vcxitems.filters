@@ -43,6 +43,9 @@
     <Filter Include="Sources\Creator">
       <UniqueIdentifier>{d037269d-8acb-40f8-8a33-3d3665504e30}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ImGui">
+      <UniqueIdentifier>{e75a939d-cab6-4286-8e29-5e57148f74e2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Project.h">
@@ -102,6 +105,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ObjectBase.h">
       <Filter>Headers\BaseObject</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ImObj.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)ProjectShader.cpp">
@@ -154,6 +160,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)UIBase.cpp">
       <Filter>Sources\BaseObject</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ImObj.cpp">
+      <Filter>ImGui</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

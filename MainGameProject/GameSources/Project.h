@@ -29,4 +29,8 @@
 
 #include "GameStage.h"
 
+#ifdef _BSImGui
+#include "ImObj.h"
+#endif // _BSImGui
+
 
