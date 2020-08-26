@@ -177,8 +177,11 @@ namespace basecross {
 		return pImpl->m_FileName;
 	}
 
-	const pair<size_t, size_t> TextureResource::GetWidthHeight() const {
-		return pair<size_t, size_t>(pImpl->width,pImpl->height);
+	const size_t TextureResource::GetWidth() const {
+		return pImpl->width;
+	}
+	const size_t TextureResource::GetHeight() const {
+		return pImpl->height;
 	}
 
 

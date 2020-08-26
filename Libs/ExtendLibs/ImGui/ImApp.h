@@ -60,6 +60,33 @@ namespace basecross
 			return ptr;
 		}
 
+		template<typename T>
+		bool FindImGuiObject(const shared_ptr<ImGuiObject>& Obj) {
+			auto shptr = dynamic_pointer_cast<T>(Obj);
+			if (shptr) {
+				for (auto ptr : m_guiObjects) {
+					if (Obj == ptr) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
+		template<typename T>
+		void RemoveImGuiObject(const shared_ptr<ImGuiObject>& Obj) {
+			if (FindImGuiObject<T>(Obj)) {
+				auto it = m_guiObjects.begin();
+				while (it != m_guiObjects.end()) {
+					if (*it == Obj) {
+						m_guiObjects.erase(it);
+						return;
+					}
+					it++;
+				}
+			}
+		}
+
 		void RemoveAllImGuiObject()
 		{
 			m_guiObjects.clear();

@@ -29,6 +29,11 @@ namespace basecross {
 											//行動のマップ
 		map<type_index, shared_ptr<Behavior>> m_BehaviorMap;
 
+		// -- 追加 --
+		#ifdef _BSImGui
+		string m_TypeName;//型名
+		#endif
+
 		shared_ptr<Component> SearchStrictComponent(type_index TypeIndex)const {
 			auto it = m_CompMap.find(TypeIndex);
 			if (it != m_CompMap.end()) {
@@ -714,6 +719,14 @@ namespace basecross {
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void DestroyGameObject();
+
+
+		// -- 追加 --
+#ifdef _BSImGui
+		void SetTypeName(const string& name) { m_TypeName = name; }
+
+		string &GetTypeName() { return m_TypeName; }
+#endif 
 	};
 
 	//--------------------------------------------------------------------------------------
@@ -1499,6 +1512,7 @@ namespace basecross {
 		shared_ptr<T> AddGameObject(Ts&&... params) {
 			try {
 				auto Ptr = ObjectFactory::Create<T>(GetThis<Stage>(), params...);
+				Ptr->SetTypeName(typeid(T).name());
 				PushBackGameObject(Ptr);
 				return Ptr;
 			}
