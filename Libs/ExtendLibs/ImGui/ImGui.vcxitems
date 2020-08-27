@@ -28,6 +28,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)imgui_impl_dx11.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)imgui_impl_win32.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)imgui_internal.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ImHelper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)imstb_rectpack.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)imstb_textedit.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)imstb_truetype.h" />

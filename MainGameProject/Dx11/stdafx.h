@@ -123,14 +123,14 @@ using namespace DirectX;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Details;
 
-#include "../../Libs/BaseLib/Dx11Lib/Common.h"
-#include "../../Libs/BaseLib/Dx11FullLib/FullCommon.h"
-using namespace basecross::bsm;
-
 #ifndef _MASTER
 #define _BSImGui
 #include "../../ExtendLibs/ImGui/ImCommon.h"
 #endif
+
+#include "../../Libs/BaseLib/Dx11Lib/Common.h"
+#include "../../Libs/BaseLib/Dx11FullLib/FullCommon.h"
+using namespace basecross::bsm;
 
 #include "resource.h"
 
