@@ -47,7 +47,7 @@ namespace basecross {
 			//ビューとライトの作成
 			CreateViewLight();
 
-			auto charaObjData = structdata::ObjectData(Vec3(0.0f), Vec3(1.0f), Vec3(0.0f),0, L"thumbnail.png");
+			auto charaObjData = structdata::ObjectData(Vec3(0.0f), Vec3(0.0f), Vec3(1.0f),1, L"tx_Cursor.png");
 			auto uiData = structdata::UIData(Vec2(0.0f), Vec3(0.0f), Vec2(150.0f, 200.0f), Vec2(0.0f, 1.0f), 5, L"menu.png");
 
 			//描画の確認用に画像を生成
@@ -60,6 +60,7 @@ namespace basecross {
 			ImApp::GetApp()->AddImGuiObject<SystemGui>();
 #endif // _BSImGui
 
+			AddGameObject<MapCursor>(charaObjData);
 		}
 		catch (...) {
 			throw;
