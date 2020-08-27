@@ -120,18 +120,22 @@ namespace basecross
 				auto DrawComp = target->GetComponent<SmBaseDraw>(false);
 				if (DrawComp)
 				{
-					auto TexRes = DrawComp->GetTextureResource();
-					if (TexRes)
+					if (ImGui::TreeNode(u8"テクスチャ情報")) 
 					{
-						ImVec2 size;
-						size.x = static_cast<float>(TexRes->GetWidth());
-						size.y = static_cast<float>(TexRes->GetHeight());
-						ImGui::Text(u8"テクスチャサイズ %.f×%.f", size.x, size.y);
-						ImGui::SameLine();
-						ImGui::Text(u8"表示サイズ %.f×%.f", size.x / 2.0f, size.y / 2.0f);
-						size.x /= 2.0f;
-						size.y /= 2.0f;
-						ImGui::Image(TexRes->GetShaderResourceView().Get(), size);
+						auto TexRes = DrawComp->GetTextureResource();
+						if (TexRes)
+						{
+							ImVec2 size;
+							size.x = static_cast<float>(TexRes->GetWidth());
+							size.y = static_cast<float>(TexRes->GetHeight());
+							ImGui::Text(u8"テクスチャサイズ %.f×%.f", size.x, size.y);
+							ImGui::SameLine();
+							ImGui::Text(u8"表示サイズ %.f×%.f", size.x / 2.0f, size.y / 2.0f);
+							size.x /= 2.0f;
+							size.y /= 2.0f;
+							ImGui::Image(TexRes->GetShaderResourceView().Get(), size);
+						}
+						ImGui::TreePop();
 					}
 				}
 			}
