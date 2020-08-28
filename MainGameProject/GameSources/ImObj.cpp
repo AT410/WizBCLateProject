@@ -7,7 +7,9 @@ namespace basecross
 	void SystemGui::OnInit()
 	{
 		m_selected = -1;
-		m_objWindow = ImApp::GetApp()->AddImGuiObject<ShowObjGui>();
+		m_example = false;
+		m_objWindow = ImApp::GetApp()->AddImGuiObject<ShowObjGui>(u8"オブジェクトウィンドウ");
+		m_MapTipWindow = ImApp::GetApp()->AddImGuiObject<ShowObjGui>(u8"詳細ウィンドウ");
 	}
 
 	void SystemGui::OnGUI()
@@ -39,6 +41,15 @@ namespace basecross
 			ImGui::Text(u8"検証速度\t%.3f ms", stage->GetCollisionManager()->GetMiscPerformanceTime());
 			ImGui::Text(u8"判定速度\t%.3f ms", stage->GetCollisionManager()->GetCollisionCountOfTern());
 			ImGui::Text(u8"物体総数\t%d", stage->GetGameObjectVec().size());
+		}
+
+		// -- 現在位置の詳細表示 --
+		string buttonstr = m_example == true ? u8"閉じる" : u8"詳細";
+		if (ImGui::Button(buttonstr.c_str()))
+		{
+			m_example = !m_example;
+			m_MapTipWindow->SetActiveDraw(m_example);
+			// -- 現在カーソルが合っているデータを取り出す --
 		}
 
 		// -- オブジェクト表示 --		
@@ -98,7 +109,7 @@ namespace basecross
 	{
 		if (m_Acitive) 
 		{
-			ImGui::Begin(u8"オブジェクトウィンドウ", &m_Acitive);
+			ImGui::Begin(m_windowName.c_str());
 			auto target = m_target.lock();
 			if (target)
 			{
@@ -142,6 +153,19 @@ namespace basecross
 
 			ImGui::End();
 		}
+	}
+
+	//----------------------------------------------------------------------------
+	//MapGui
+	//----------------------------------------------------------------------------
+	void MapGui::OnInit()
+	{
+
+	}
+
+	void MapGui::OnGUI()
+	{
+
 	}
 }
 #endif // _BSImGui

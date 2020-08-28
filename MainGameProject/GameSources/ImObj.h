@@ -21,7 +21,10 @@ namespace basecross
 	private:
 		weak_ptr<Stage> m_stage;
 		shared_ptr<ShowObjGui> m_objWindow;
+		shared_ptr<ShowObjGui> m_MapTipWindow;
 		int m_selected;
+
+		bool m_example;
 	};
 
 	//----------------------------------------------------------------------------
@@ -30,7 +33,9 @@ namespace basecross
 	class ShowObjGui : public ImGuiObject
 	{
 	public:
-		ShowObjGui(){}
+		ShowObjGui(const string& name)
+			:m_windowName(name)
+		{}
 
 		void OnInit()override;
 
@@ -40,9 +45,24 @@ namespace basecross
 
 		void SetActiveDraw(const bool Active) { m_Acitive = Active; }
 
-	private:
+	protected:
+		string m_windowName;
 		weak_ptr<GameObject> m_target;
 		bool m_Acitive;
+	};
+
+	//----------------------------------------------------------------------------
+	//MapImGui
+	//----------------------------------------------------------------------------
+	class MapGui:public ShowObjGui
+	{
+	public:
+		void OnInit()override;
+
+		void OnGUI()override;
+
+	private:
+
 	};
 }
 #endif // _BSImGui
