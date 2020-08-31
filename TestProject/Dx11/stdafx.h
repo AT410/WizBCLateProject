@@ -122,13 +122,14 @@ using namespace DirectX;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Details;
 
+// -- ImGuiëgÇ›çûÇ› --
+#define _BSImGui
+#include "../../ExtendLibs/ImGui/ImCommon.h"
+
 #include "../../Libs/BaseLib/Dx11Lib/Common.h"
 #include "../../Libs/BaseLib/Dx11FullLib/FullCommon.h"
 using namespace basecross::bsm;
 
-// -- ImGuiëgÇ›çûÇ› --
-#define _BSImGui
-#include "../../ExtendLibs/ImGui/ImCommon.h"
 
 // -- LUAëgÇ›çûÇ› --
 #define _BaseLua

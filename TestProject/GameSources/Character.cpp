@@ -189,9 +189,10 @@ namespace basecross{
 			ImGui::ProgressBar(f);
 
 			auto img = App::GetApp()->GetResource<TextureResource>(L"TestTex");
-			auto size = img->GetWidthHeight();
-			ImGui::Text("size = %d x %d", size.first, size.second);
-			ImGui::Image((void*)img->GetShaderResourceView().Get(), ImVec2(size.first, size.second));
+			auto width = static_cast<float>(img->GetWidth());
+			auto height = static_cast<float>(img->GetHeight());
+			ImGui::Text("size = %d x %d", width, height);
+			ImGui::Image((void*)img->GetShaderResourceView().Get(), ImVec2(width, height));
 
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
