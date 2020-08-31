@@ -31,13 +31,14 @@ namespace structdata {
 
 	struct MapData
 	{
+		int mapState;
 		Vec3 mapPos;
 		int defaultMapCost;
 		int nowMapCost;
 
 		MapData(){}
-		MapData(Vec3 mapPos, int defaultMapCost, int nowMapCost):
-			mapPos(mapPos), defaultMapCost(defaultMapCost), nowMapCost(nowMapCost)
+		MapData(int mapState, Vec3 mapPos, int defaultMapCost, int nowMapCost):
+			mapState(mapState), mapPos(mapPos), defaultMapCost(defaultMapCost), nowMapCost(nowMapCost)
 		{}
 	};
 
@@ -53,12 +54,13 @@ namespace structdata {
 
 	struct CharactorData
 	{
-		unsigned int charaID, jobID, Lv, Exp, HP, Pow, Def, MoveRange, AttackRange;
+		unsigned int charaID, jobID, Lv, Exp, HP, MaxHP, Pow, Def, MoveRange, AttackRange;
+		bool isDed = false;
 
 		CharactorData() {}
-		CharactorData(int charaID, int jobID, int Lv, int Exp, int HP, int Pow, int Def, int MoveRenge, int AttackRange):
-			charaID(charaID), jobID(jobID), Lv(Lv), Exp(Exp), HP(HP), Pow(Pow), Def(Def), MoveRange(MoveRenge), AttackRange(AttackRange)
-		{};
+		CharactorData(int charaID, int jobID, int Lv, int Exp, int MaxHP, int Pow, int Def, int MoveRenge, int AttackRange):
+			charaID(charaID), jobID(jobID), Lv(Lv), Exp(Exp), HP(MaxHP), MaxHP(MaxHP), Pow(Pow), Def(Def), MoveRange(MoveRenge), AttackRange(AttackRange)
+		{}
 	};
 
 	struct CharactorCommandData
@@ -66,8 +68,8 @@ namespace structdata {
 		bool isAttacked, isMoved, isWaiting;
 
 		CharactorCommandData() {}
-		CharactorCommandData(bool isAttacked, bool isMoved, bool isWaiting):
-		isAttacked(isAttacked), isMoved(isMoved), isWaiting(isWaiting) {}
+		CharactorCommandData(bool isAttacked, bool isMoved, bool isWaiting) :
+			isAttacked(isAttacked), isMoved(isMoved), isWaiting(isWaiting) {}
 	};
 
 	struct LevelUPBonus
