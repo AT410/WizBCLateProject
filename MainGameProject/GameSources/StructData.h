@@ -54,12 +54,14 @@ namespace structdata {
 
 	struct CharactorData
 	{
-		unsigned int charaID, jobID, Lv, Exp, HP, MaxHP, Pow, Def, MoveRange, AttackRange;
+		unsigned int charaID, jobID, Lv, Exp, HP, MaxHP, Pow, Def, MoveRange;
 		bool isDed = false;
+		vector<unsigned int> weaponID;
 
 		CharactorData() {}
-		CharactorData(int charaID, int jobID, int Lv, int Exp, int MaxHP, int Pow, int Def, int MoveRenge, int AttackRange):
-			charaID(charaID), jobID(jobID), Lv(Lv), Exp(Exp), HP(MaxHP), MaxHP(MaxHP), Pow(Pow), Def(Def), MoveRange(MoveRenge), AttackRange(AttackRange)
+		CharactorData(int charaID, int jobID, int Lv, int Exp, int MaxHP, int Pow, int Def, int MoveRenge, vector<unsigned int> weaponID):
+			charaID(charaID), jobID(jobID), Lv(Lv), Exp(Exp), HP(MaxHP),
+			MaxHP(MaxHP), Pow(Pow), Def(Def), MoveRange(MoveRenge), weaponID(weaponID)
 		{}
 	};
 
@@ -72,8 +74,23 @@ namespace structdata {
 			isAttacked(isAttacked), isMoved(isMoved), isWaiting(isWaiting) {}
 	};
 
-	struct LevelUPBonus
+	struct JobData
 	{
+		unsigned int baseMaxHP, basePow, baseDef, MoveRange;
 
+		JobData() {}
+		JobData(int MaxHP, int Pow, int Def, int MoveRenge) :
+			baseMaxHP(MaxHP), basePow(Pow), baseDef(Def), MoveRange(MoveRenge)
+		{}
+	};
+
+	struct WeaponData
+	{
+		unsigned int weponID, weponPow, weponDef, AttackRange;
+		int weaponTag;
+
+		WeaponData(){}
+		WeaponData(int weponID, int weponPow, int weponDef, int AttackRange, int weaponTag):
+		weponID(weponID), weponPow(weponPow), weponDef(weponDef), AttackRange(AttackRange), weaponTag(weaponTag){}
 	};
 }

@@ -16,6 +16,12 @@ namespace enumdata {
 		choiceMap,		//マップ選択
 		choiceEnemy,	//敵選択
 		turnEnd,		//ターンエンド
+		gameStart,		//ゲーム開始
+		changePlayer,	//プレイヤー変更
 	};
+
+	enum eWeaponTag { Sword, Spear, Bow };
+
+	enum eWeaponID { normalSword, normalSpear, normalBow };
 
 }
