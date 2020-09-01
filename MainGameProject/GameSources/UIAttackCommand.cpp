@@ -77,7 +77,7 @@ namespace basecross {
 			return;
 		}
 		// 選択できないように見せる
-		GetChildContent(m_selectAttackContent)->StateCommandPassive();
+		//GetChildContent(m_selectAttackContent)->StateCommandPassive();
 		// カーソルを動かなくさせる(みえない)
 		m_childCursor->SetDrawActive(false);
 		m_childCursor->SetUpdateActive(false);
@@ -91,6 +91,7 @@ namespace basecross {
 			parent->SetDrawActive(false);
 			SetActiveToChildContents(false);
 			SetDrawActive(false);
+			GetTypeStage<GameStage>()->SettingAttackCostMap(AttackCommandContent::Weapon1);
 			break;
 		case AttackCommandContent::Weapon2:
 			// メインコマンドウィンドウ見えなくして武器2で攻撃
@@ -98,6 +99,7 @@ namespace basecross {
 			parent->SetDrawActive(false);
 			SetActiveToChildContents(false);
 			SetDrawActive(false);
+			GetTypeStage<GameStage>()->SettingAttackCostMap(AttackCommandContent::Weapon2);
 			break;
 		}
 

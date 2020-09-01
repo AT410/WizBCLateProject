@@ -87,6 +87,7 @@ namespace basecross {
 			// メインコマンドウィンドウ見えなくするのと移動のほうに切り替え
 			SetActiveToChildContents(false);
 			SetDrawActive(false);
+			GetTypeStage<GameStage>()->SettingMoveCostMap();
 			break;
 		case CommandContent::Wait:
 			// メインコマンドウィンドウ見えなくするのとターンエンド以外押せなくする
@@ -99,12 +100,13 @@ namespace basecross {
 			}
 			SetActiveToChildContents(false);
 			SetDrawActive(false);
+			GetTypeStage<GameStage>()->WaitCharacter();
 			break;
 		case CommandContent::TurnEnd:
 			// メインコマンドウィンドウ見えなくするのとプレイヤー切り替え
 			SetActiveToChildContents(false);
 			SetDrawActive(false);
-
+			GetTypeStage<GameStage>()->ChangePlayerTurn();
 			break;
 		}
 

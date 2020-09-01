@@ -135,9 +135,12 @@ namespace basecross {
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec()[0];
 		if (cntlVec.wPressedButtons & XINPUT_GAMEPAD_A)
 		{
-			auto parent = dynamic_pointer_cast<UIMainCommand>(GetComponent<Transform>()->GetParent());
-			parent->SetSelectMainCommand(true);
-			parent->SetSelectMainContent((CommandContent)m_count);
+			if (GetTypeStage<GameStage>()->GetGameStateNum() == eGameStateNum::choiceAction) {
+				auto parent = dynamic_pointer_cast<UIMainCommand>(GetComponent<Transform>()->GetParent());
+				parent->SetSelectMainCommand(true);
+				parent->SetSelectMainContent((CommandContent)m_count);
+
+			}
 		}
 	}
 	// Bƒ{ƒ^ƒ“
@@ -149,6 +152,7 @@ namespace basecross {
 		{
 			auto parent = dynamic_pointer_cast<UIMainCommand>(GetComponent<Transform>()->GetParent());
 			parent->SetActiveThis(false);
+			GetTypeStage<GameStage>()->SetGameStateNum(eGameStateNum::choicePlayer);
 		}
 	}
 
