@@ -54,7 +54,8 @@ namespace structdata {
 
 	struct CharactorData
 	{
-		unsigned int charaID, jobID, Lv, Exp, HP, MaxHP, Pow, Def, MoveRange;
+		int HP;
+		unsigned int charaID, jobID, Lv, Exp, MaxHP, Pow, Def, MoveRange;
 		bool isDed = false;
 		vector<unsigned int> weaponID;
 
