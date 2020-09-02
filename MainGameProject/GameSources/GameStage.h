@@ -69,6 +69,10 @@ namespace basecross {
 
 		void ConfirmationAttack();
 
+		void DamageCalculation(CharactorData& enemyData);
+
+		void CheckPlayerHP(CharactorData& enemyData);
+
 		void SerchCharactor(int playerNum);
 
 		void CreateCanAcionMapID(int actionCost);

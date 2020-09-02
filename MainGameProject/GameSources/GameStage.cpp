@@ -123,7 +123,70 @@ namespace basecross {
 			if (m_choiceMapID.mapPos == m_charactorMapID[playerNum][i].mapPos) {
 				//E½UE½E½E½Â”\
 				m_charactorCommandData[m_playerTurnNum][m_choiceCharactorID].isAttacked = true;
+	//ï¿½_ï¿½ï¿½ï¿½[ï¿½Wï¿½vï¿½Z
+	void GameStage::DamageCalculation(CharactorData& enemyData) {
+		//MessageBox(0, L"ï¿½_ï¿½ï¿½ï¿½[ï¿½Wï¿½ï¿½ï¿½ï¿½", L"", 0);
+
+		auto playerWeapon = m_weaponData[m_choiceWeaponID];
+		auto enemyWeapon = m_weaponData[0];
+
+		auto charactorData = m_charactorData[m_playerTurnNum][m_choiceCharactorID];
+
+		float weekBunus = 1.5f;
+
+		float pow = ((float)charactorData.Lv * 2 / 5.0f) + (float)charactorData.Pow + playerWeapon.weponPow;
+		float def = (float)enemyData.Def / 2 + enemyWeapon.weponDef;
+		float damage = pow - def;
+
+		if (playerWeapon.weaponTag != enemyWeapon.weaponTag) {
+			if (playerWeapon.weaponTag == (int)eWeaponTag::Sword) {
+				if (enemyWeapon.weaponTag == eWeaponTag::Spear) {
+					MessageBox(0, L"ï¿½_ï¿½ï¿½ï¿½[ï¿½WUP", L"", 0);
+					damage = damage * weekBunus;
+				}
+				else {
+					MessageBox(0, L"ï¿½_ï¿½ï¿½ï¿½[ï¿½WDOWN", L"", 0);
+					damage = damage * 0.5f;
+				}
 			}
+			else if (playerWeapon.weaponTag == eWeaponTag::Spear) {
+				if (enemyWeapon.weaponTag == eWeaponTag::Bow) {
+					MessageBox(0, L"ï¿½_ï¿½ï¿½ï¿½[ï¿½WUP", L"", 0);
+					damage = damage * weekBunus;
+				}
+				else {
+					MessageBox(0, L"ï¿½_ï¿½ï¿½ï¿½[ï¿½WDOWN", L"", 0);
+					damage = damage * 0.5f;
+				}
+			}
+			else if (playerWeapon.weaponTag == eWeaponTag::Bow) {
+				if (enemyWeapon.weaponTag == eWeaponTag::Sword) {
+					MessageBox(0, L"ï¿½_ï¿½ï¿½ï¿½[ï¿½WUP", L"", 0);
+					damage = damage * weekBunus;
+				}
+				else {
+					MessageBox(0, L"ï¿½_ï¿½ï¿½ï¿½[ï¿½WDOWN", L"", 0);
+					damage = damage * 0.5f;
+				}
+			}
+		}
+
+		if (damage > 0) {
+			enemyData.HP = enemyData.HP - (unsigned int)damage;
+		}
+		else {
+			srand((unsigned int)time(NULL));
+			m_charactorData[m_playerTurnNum][m_choiceCharactorID].HP = enemyData.HP - rand() % 2 + 1;
+		}
+
+		CheckPlayerHP(enemyData);
+	}
+
+	void GameStage::CheckPlayerHP(CharactorData& enemyData) {
+		if (enemyData.HP <= 0) {
+			//ï¿½ï¿½ï¿½ê‚½ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½\ï¿½ï¿½ï¿½É‚ï¿½ï¿½ï¿½
+			enemyData.isDed = true;
+			m_charactorObj[m_choiceEnemyID][m_choiceCharactorID]->DestroyCharacter();
 		}
 	}
 
