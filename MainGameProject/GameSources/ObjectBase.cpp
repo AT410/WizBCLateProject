@@ -63,6 +63,7 @@ namespace basecross {
 		auto texDir = app->GetDataDirWString();
 
 		//アルファ値を有効にする
+		m_textureName = texStr;
 		drawComp->SetTextureResource(m_textureName);
 		this->SetAlphaActive(true);
 
