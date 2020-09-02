@@ -26,11 +26,14 @@ namespace basecross {
 
 		void InputStic();
 
+		void InputKey();
+
 		void InputCrossKey();
 
 		void MovePos(int mapIDX, int mapIDY);
 
-		void PushA();
+		void OnPushA();
 
+		void OnPushB() {};
 	};
 }
