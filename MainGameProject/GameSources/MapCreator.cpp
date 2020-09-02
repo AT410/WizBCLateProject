@@ -104,11 +104,11 @@ namespace basecross {
 			switch (index)
 			{
 			case (int)eXMLMapStateNum::Normal:
-				m_mapData[mapID.y][mapID.x] = MapData(mapPos, -1, -1);
+				m_mapData[mapID.y][mapID.x] = MapData(index, mapPos, -1, -1);
 				break;
 
 			case (int)eXMLMapStateNum::Forest:
-				m_mapData[mapID.y][mapID.x] = MapData(mapPos, -2, -2);
+				m_mapData[mapID.y][mapID.x] = MapData(index, mapPos, -2, -2);
 				break;
 
 			default:
@@ -176,6 +176,24 @@ namespace basecross {
 				auto objData = ObjectData(
 					Vec3(m_mapData[j][i].mapPos.x, m_mapData[j][i].mapPos.y, 0.0f),
 					Vec3(0.0f), Vec3(0.5f), 0, L"sand1.jpg");
+
+				switch (m_mapData[j][i].mapState)
+				{
+				case (int)eXMLMapStateNum::Normal:
+					objData = ObjectData(
+						Vec3(m_mapData[j][i].mapPos.x, m_mapData[j][i].mapPos.y, 0.0f),
+						Vec3(0.0f), Vec3(1.0f), 0, L"sand1.jpg");
+					break;
+
+				case (int)eXMLMapStateNum::Forest:
+					objData = ObjectData(
+						Vec3(m_mapData[j][i].mapPos.x, m_mapData[j][i].mapPos.y, 0.0f),
+						Vec3(0.0f), Vec3(1.0f), 0, L"thumbnail.png");
+					break;
+				default:
+					break;
+				}
+
 				GetStage()->AddGameObject<ObjectBase>(objData);
 			}
 		}
