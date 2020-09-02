@@ -13,29 +13,40 @@ namespace basecross {
 	//	ÉQÅ[ÉÄÉXÉeÅ[ÉWÉNÉâÉX
 	//--------------------------------------------------------------------------------------
 	class GameStage : public Stage {
-
+		InputHandler<GameStage> m_handler;
 		shared_ptr<Camera> m_ptrCamera;
 		shared_ptr<UIMainCommand> m_ptrUIMainCommand;
 
 		vector<vector<MapData>> m_mapData;
 		vector<vector<MapID>> m_charactorMapID;
 		vector<MapID> m_canActionMapID;
+		vector<vector<shared_ptr<Character>>> m_charactorObj;
 		vector <vector<CharactorData>> m_charactorData;
 		vector<vector<CharactorCommandData>> m_charactorCommandData;
+		vector<WeaponData> m_weaponData = {
+			WeaponData(eWeaponID::normalSword,	3, 2, 1, eWeaponTag::Sword),
+			WeaponData(eWeaponID::normalSpear,	4, 0, 2, eWeaponTag::Spear),
+			WeaponData(eWeaponID::normalBow,	2, 0, 4, eWeaponTag::Bow),
+		};
 
+		vector<shared_ptr<ObjectBase>> m_actionRangeObj;
 		MapID m_choiceMapID;
+		unsigned int m_choiceWeaponID;
+		int m_choiceEnemyID;
+
+		vector<unsigned int> m_orderOfAction;
 
 		unsigned int m_gameStateNum;
 		unsigned int m_playerTurnNum;
 		unsigned int m_choiceCharactorID;
-		int m_maxPlayerNum;
-		float time;
+		unsigned int m_maxPlayerNum;
 		//ÉrÉÖÅ[ÇÃçÏê¨
 		void CreateViewLight();
 	public:
 		//ç\ízÇ∆îjä¸
 		GameStage() :Stage() {
 			m_maxPlayerNum = 4;
+			m_playerTurnNum = eGameStateNum::choicePlayer;
 		}
 		virtual ~GameStage() {}
 		//èâä˙âª
@@ -56,10 +67,13 @@ namespace basecross {
 		int GetMaxPlayerNum() { return m_maxPlayerNum; };
 		void SetCharactorMapID(vector<vector<MapID>> mapID) { m_charactorMapID = mapID; };
 		MapID GetCharactorMapID(int playerID, int playerNum) { return m_charactorMapID[playerID][playerNum]; };
+		void SetGameStateNum(eGameStateNum set) { m_gameStateNum = set; };
 		unsigned int GetGameStateNum() { return m_gameStateNum; };
 		void SetChoiceMapID(MapID choiceID) { m_choiceMapID = choiceID; };
+		void SetChoiceWeaponID(eWeaponID set) { m_choiceWeaponID = set; };
 
-		//ÔøΩÔøΩÔøΩÔøΩ
+
+		//èàóù
 		void VisibleUIMainCommand();
 
 		void UpDateCameraPos(Vec2 at);
@@ -90,7 +104,7 @@ namespace basecross {
 
 		void SettingMoveCostMap();
 
-		void SettingAttackCostMap();
+		void SettingAttackCostMap(AttackCommandContent setWeapon);
 
 		void WaitCharacter();
 

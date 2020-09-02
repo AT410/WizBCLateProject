@@ -51,16 +51,30 @@ namespace basecross {
 			auto uiData = structdata::UIData(Vec2(0.0f), Vec3(0.0f), Vec2(150.0f, 200.0f), Vec2(0.0f, 1.0f), 5, L"menu.png");
 
 			//ï`âÊÇÃämîFópÇ…âÊëúÇê∂ê¨
-			AddGameObject<ObjectBase>(charaObjData);
+			//AddGameObject<ObjectBase>(charaObjData);
 
 			AddGameObject<MapCreator>();
-			AddGameObject<UIMainCommand>(uiData);
 
 			AddGameObject<MapCursor>(charaObjData);
 
 #ifdef _BSImGui
 			ImApp::GetApp()->AddImGuiObject<SystemGui>();
 #endif // _BSImGui
+
+			AddGameObject<MapCursor>(charaObjData);
+
+			CreateCharactor();
+
+			for (int i = 0; i < 50; i++) {
+				auto objData = ObjectData(
+					Vec3(0.0f),
+					Vec3(0.0f), Vec3(0.5f), 1, L"tx_MovingRange.png");
+				m_actionRangeObj.push_back(AddGameObject<ObjectBase>(objData));
+				m_actionRangeObj[i]->SetDrawActive(false);
+			}
+
+			m_ptrUIMainCommand = AddGameObject<UIMainCommand>(uiData);
+			m_ptrUIMainCommand->SetActiveThis(false);
 
 		}
 		catch (...) {
@@ -69,6 +83,9 @@ namespace basecross {
 	}
 
 	void GameStage::OnUpdate() {
+		m_handler.PushHandle(GetThis<GameStage>());
+		VisibleUIMainCommand();
+	}
 
 	void GameStage::VisibleUIMainCommand(){
 		if (m_gameStateNum == eGameStateNum::choiceAction) {
@@ -109,16 +126,34 @@ namespace basecross {
 
 	void GameStage::ChangeGameStateNum(eGameStateNum gameState) {
 		m_gameStateNum = gameState;
+
 	}
 
 	void GameStage::ConfirmationCharacter() {
+		//ChangeGameStateNum(eGameStateNum::choiceAction);
+		m_gameStateNum = eGameStateNum::choiceAction;
+		m_ptrUIMainCommand->GetChildContent(CommandContent::Attack)->StateCommandPassive();
+		m_ptrUIMainCommand->GetChildContent(CommandContent::Move)->StateCommandPassive();
+		m_ptrUIMainCommand->GetChildContent(CommandContent::Wait)->StateCommandPassive();
+
 		for (int i = 0; i < m_charactorMapID[m_playerTurnNum].size(); i++) {
 			if (m_charactorMapID[m_playerTurnNum][i].mapPos == m_choiceMapID.mapPos) {
+				if (m_charactorData[m_playerTurnNum][i].isDed == true) {
+					return;
+				}
+
 				m_choiceCharactorID = i;
-				//m_charactorCommandData;
-				MessageBox(0, L"ÅEΩLÅEΩÅEΩÅEΩÅEΩÅEΩNÅEΩ^ÅEΩ[ÅEΩÅEΩÅEΩÅEΩÅEΩÅEΩ", L"ÅEΩLÅEΩÅEΩÅEΩÅEΩÅEΩNÅEΩ^ÅEΩ[ÅEΩ‘çÔøΩÅEΩF"+ i, 0);
-				//ÅEΩLÅEΩÅEΩÅEΩÅEΩÅEΩNÅEΩ^ÅEΩ[ÅEΩÃÉRÅEΩ}ÅEΩÅEΩÅEΩhÅEΩIÅEΩÅEΩÅEΩ‘Ç…ÇÔøΩÅEΩÅEΩ
-				SettingMoveCostMap();
+				//MessageBox(0, L"", L"", 0);
+
+				if (!m_charactorCommandData[m_playerTurnNum][i].isAttacked) {
+					m_ptrUIMainCommand->GetChildContent(CommandContent::Attack)->StateCommandActive();
+				}
+				if (!m_charactorCommandData[m_playerTurnNum][i].isMoved) {
+					m_ptrUIMainCommand->GetChildContent(CommandContent::Move)->StateCommandActive();
+				}
+				if (!m_charactorCommandData[m_playerTurnNum][i].isWaiting) {
+					m_ptrUIMainCommand->GetChildContent(CommandContent::Wait)->StateCommandActive();
+				}
 				return;
 			}
 		}
@@ -129,8 +164,10 @@ namespace basecross {
 			for (int i = 0; i < m_canActionMapID.size(); i++) {
 				if (m_canActionMapID[i].mapPos == m_choiceMapID.mapPos) {
 					m_charactorMapID[m_playerTurnNum][m_choiceCharactorID] = m_choiceMapID;
+					m_charactorObj[m_playerTurnNum][m_choiceCharactorID]->MoveCharacter(m_mapData[m_choiceMapID.y][m_choiceMapID.x].mapPos);
+					InvisibleActionRangeObj();
 					m_charactorCommandData[m_playerTurnNum][m_choiceCharactorID].isMoved = true;
-					ResetCanActionMapID();
+					m_gameStateNum = eGameStateNum::choicePlayer;
 					return;
 				}
 			}
@@ -138,9 +175,13 @@ namespace basecross {
 	}
 
 	void GameStage::ConfirmationAttack() {
-		for (int i = 0; i < m_charactorMapID.size(); i++) {
-			if (i != m_playerTurnNum) {
-				SerchCharactor(i);
+		for (int i = 0; i < m_canActionMapID.size(); i++) {
+			if (m_choiceMapID.mapPos == m_canActionMapID[i].mapPos) {
+				for (int i = 0; i < m_charactorMapID.size(); i++) {
+					if (i != m_playerTurnNum) {
+						SerchCharactor(i);
+					}
+				}
 			}
 		}
 	}
@@ -148,11 +189,27 @@ namespace basecross {
 	void GameStage::SerchCharactor(int playerNum) {
 		for (int i = 0; i < m_charactorMapID[playerNum].size(); i++) {
 			if (m_choiceMapID.mapPos == m_charactorMapID[playerNum][i].mapPos) {
-				//ÅEΩUÅEΩÅEΩÅEΩ¬î\
+				if (m_charactorData[playerNum][i].isDed) {
+					return;
+				}
+
+				m_choiceEnemyID = playerNum;
 				m_charactorCommandData[m_playerTurnNum][m_choiceCharactorID].isAttacked = true;
-	//ÔøΩ_ÔøΩÔøΩÔøΩ[ÔøΩWÔøΩvÔøΩZ
+
+				InvisibleActionRangeObj();
+
+				DamageCalculation(m_charactorData[playerNum][i]);
+				m_gameStateNum = eGameStateNum::choicePlayer;
+			}
+		}
+	}
+
+	//HPÇå∏ÇÁÇ∑èàóù
+	//void GameStage::
+
+	//É_ÉÅÅ[ÉWåvéZ
 	void GameStage::DamageCalculation(CharactorData& enemyData) {
-		//MessageBox(0, L"ÔøΩ_ÔøΩÔøΩÔøΩ[ÔøΩWÔøΩÔøΩÔøΩÔøΩ", L"", 0);
+		//MessageBox(0, L"É_ÉÅÅ[ÉWèàóù", L"", 0);
 
 		auto playerWeapon = m_weaponData[m_choiceWeaponID];
 		auto enemyWeapon = m_weaponData[0];
@@ -168,31 +225,31 @@ namespace basecross {
 		if (playerWeapon.weaponTag != enemyWeapon.weaponTag) {
 			if (playerWeapon.weaponTag == (int)eWeaponTag::Sword) {
 				if (enemyWeapon.weaponTag == eWeaponTag::Spear) {
-					MessageBox(0, L"ÔøΩ_ÔøΩÔøΩÔøΩ[ÔøΩWUP", L"", 0);
+					MessageBox(0, L"É_ÉÅÅ[ÉWUP", L"", 0);
 					damage = damage * weekBunus;
 				}
 				else {
-					MessageBox(0, L"ÔøΩ_ÔøΩÔøΩÔøΩ[ÔøΩWDOWN", L"", 0);
+					MessageBox(0, L"É_ÉÅÅ[ÉWDOWN", L"", 0);
 					damage = damage * 0.5f;
 				}
 			}
 			else if (playerWeapon.weaponTag == eWeaponTag::Spear) {
 				if (enemyWeapon.weaponTag == eWeaponTag::Bow) {
-					MessageBox(0, L"ÔøΩ_ÔøΩÔøΩÔøΩ[ÔøΩWUP", L"", 0);
+					MessageBox(0, L"É_ÉÅÅ[ÉWUP", L"", 0);
 					damage = damage * weekBunus;
 				}
 				else {
-					MessageBox(0, L"ÔøΩ_ÔøΩÔøΩÔøΩ[ÔøΩWDOWN", L"", 0);
+					MessageBox(0, L"É_ÉÅÅ[ÉWDOWN", L"", 0);
 					damage = damage * 0.5f;
 				}
 			}
 			else if (playerWeapon.weaponTag == eWeaponTag::Bow) {
 				if (enemyWeapon.weaponTag == eWeaponTag::Sword) {
-					MessageBox(0, L"ÔøΩ_ÔøΩÔøΩÔøΩ[ÔøΩWUP", L"", 0);
+					MessageBox(0, L"É_ÉÅÅ[ÉWUP", L"", 0);
 					damage = damage * weekBunus;
 				}
 				else {
-					MessageBox(0, L"ÔøΩ_ÔøΩÔøΩÔøΩ[ÔøΩWDOWN", L"", 0);
+					MessageBox(0, L"É_ÉÅÅ[ÉWDOWN", L"", 0);
 					damage = damage * 0.5f;
 				}
 			}
@@ -211,21 +268,21 @@ namespace basecross {
 
 	void GameStage::CheckPlayerHP(CharactorData& enemyData) {
 		if (enemyData.HP <= 0) {
-			//ÔøΩÔøΩÔøΩÍÇΩÔøΩvÔøΩÔøΩÔøΩCÔøΩÔøΩÔøΩ[ÔøΩÔøΩÔøΩ\ÔøΩÔøΩÔøΩ…ÇÔøΩÔøΩÔøΩ
+			//Ç‚ÇÁÇÍÇΩÉvÉåÉCÉÑÅ[ÇîÒï\é¶Ç…Ç∑ÇÈ
 			enemyData.isDed = true;
 			m_charactorObj[m_choiceEnemyID][m_choiceCharactorID]->DestroyCharacter();
 		}
 	}
 
 	void GameStage::CreateCanAcionMapID(int actionCost) {
-		m_mapData[m_choiceMapID.y][m_choiceMapID.x].nowMapCost = actionCost;
+		m_mapData[m_choiceMapID.y][m_choiceMapID.x].nowMapCost = actionCost++;
 		m_canActionMapID.push_back(m_choiceMapID);
 
 		MapSearch4(m_choiceMapID, actionCost);
 	}
 
 	void GameStage::MapSearch4(MapID mapID, int actionCost) {
-		if (mapID.x > 0 && mapID.y > 0 && mapID.x < m_mapData[0].size(), mapID.y < m_mapData.size()) {
+		if (mapID.x >= 0 && mapID.y >= 0 && mapID.x < m_mapData[0].size() && mapID.y < m_mapData.size()) {
 			auto searchMapID = MapID(mapID.x, mapID.y -1);
 			MapSearch(searchMapID, actionCost);
 
@@ -241,23 +298,24 @@ namespace basecross {
 	}
 
 	void GameStage::MapSearch(MapID mapID, int actionCost) {
+		//É}ÉbÉvÇÃÉTÉCÉYÇ©ÇÁÇÕÇ›èoÇµÇƒÇ¢ÇΩÇÁèIóπ
 		if (mapID.mapPos.x < 0 || mapID.y < 0 ||
 			mapID.x >= m_mapData[0].size() || mapID.y >= m_mapData.size()) {
 			return;
 		}
 
-		if (actionCost <= m_mapData[mapID.y][mapID.x].nowMapCost) {
+		//ÉAÉNÉVÉáÉìÉRÉXÉgÇ™è¨Ç≥Ç¢èÍçáÇÕèIóπ
+		if (actionCost < m_mapData[mapID.y][mapID.x].nowMapCost) {
 			return;
 		}
 		
-		//ÅEΩRÅEΩXÅEΩgÅEΩ}ÅEΩbÅEΩvÅEΩÅEΩÅEΩXÅEΩVÅEΩÅEΩÅEΩÅEΩƒÇÔøΩÅEΩÅEΩ»ÇÔøΩ}ÅEΩbÅEΩvIDÅEΩÅEΩ«âÔøΩÅEΩÅEΩÅEΩ»ÇÔøΩ
-		if (0 < m_mapData[mapID.y][mapID.x].nowMapCost){
+		actionCost = actionCost + m_mapData[mapID.y][mapID.x].defaultMapCost;
+
+		if (0 <= m_mapData[mapID.y][mapID.x].nowMapCost){
 			m_mapData[mapID.y][mapID.x].nowMapCost = actionCost;
 			MapSearch4(mapID, actionCost);
 			return;
 		}
-
-		actionCost = actionCost + m_mapData[mapID.y][mapID.x].nowMapCost;
 
 		if (actionCost > 0) {
 			m_mapData[mapID.y][mapID.x].nowMapCost = actionCost;
@@ -270,9 +328,8 @@ namespace basecross {
 	}
 
 	void GameStage::ResetCanActionMapID() {
-		for each (auto mapData in m_mapData)
-		{
-			mapData[0].nowMapCost = mapData[0].defaultMapCost;
+		for (int i = 0; i < m_canActionMapID.size(); i++) {
+			m_mapData[m_canActionMapID[i].y][m_canActionMapID[i].x].nowMapCost = m_mapData[m_canActionMapID[i].y][m_canActionMapID[i].x].defaultMapCost;
 		}
 
 		m_canActionMapID.clear();
@@ -286,11 +343,11 @@ namespace basecross {
 		}
 
 		auto moveCost = m_charactorData[m_playerTurnNum][m_choiceCharactorID].MoveRange;
-		MessageBox(0, L"ÅEΩ}ÅEΩbÅEΩvÅEΩRÅEΩXÅEΩgÅEΩÅE¨", L"ÅEΩ}ÅEΩbÅEΩv", 0);
+		//MessageBox(0, L"", L"", 0);
 		CreateCanAcionMapID(moveCost);
 		m_gameStateNum = eGameStateNum::choiceMap;
 
-		MessageBox(0, L"ÅEΩ⁄ìÔøΩÅEΩÕàÔøΩ", L"ÅEΩÅEΩÅEΩÅEΩ", 0);
+		//MessageBox(0, L"", L"", 0);
 		for (int i = 0; i < m_canActionMapID.size(); i++) {
 			auto objData = ObjectData(
 				Vec3(m_mapData[m_canActionMapID[i].y][m_canActionMapID[i].x].mapPos.x, m_mapData[m_canActionMapID[i].y][m_canActionMapID[i].x].mapPos.y, 0.0f),
@@ -305,13 +362,12 @@ namespace basecross {
 		}
 	}
 
-	void GameStage::SettingAttackCostMap() {
+	void GameStage::SettingAttackCostMap(AttackCommandContent setWeapon) {
 		for (int i = 0; i < m_charactorMapID.size(); i++) {
 			for (int j = 0; j < m_charactorMapID[i].size(); j++) {
 				if (m_charactorMapID[i][j].x == m_choiceMapID.x &&
 					m_charactorMapID[i][j].y == m_choiceMapID.y) {
-					//ÅEΩIÅEΩÅEΩ≈ÇÔøΩÅEΩ»ÇÔøΩ
-					return;
+					//return;
 				}
 			}
 		}
@@ -351,7 +407,7 @@ namespace basecross {
 	}
 
 	void GameStage::ChangePlayerTurn() {
-		MessageBox(0, L"ÔøΩÔøΩÔøΩÃÉvÔøΩÔøΩÔøΩCÔøΩÔøΩÔøΩ[ÔøΩÃÉ^ÔøΩ[ÔøΩÔøΩ", L"ÔøΩ^ÔøΩ[ÔøΩÔøΩÔøΩIÔøΩÔøΩ", 0);
+		MessageBox(0, L"éüÇÃÉvÉåÉCÉÑÅ[ÇÃÉ^Å[Éì", L"É^Å[ÉìèIóπ", 0);
 		m_gameStateNum = eGameStateNum::changePlayer;
 		for (int i = 0; i < m_charactorCommandData[m_playerTurnNum].size(); i++) {
 			m_charactorCommandData[m_playerTurnNum][i].isAttacked = false;
