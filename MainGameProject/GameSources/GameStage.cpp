@@ -228,7 +228,23 @@ namespace basecross {
 				Vec3(m_canActionMapID[i].mapPos.x, m_canActionMapID[i].mapPos.y, 0.0f),
 				Vec3(0.0f), Vec3(0.5f), 0, L"thumbnail.png");
 			AddGameObject<ObjectBase>(objData);
+
+	void GameStage::ChangePlayerTurn() {
+		MessageBox(0, L"���̃v���C���[�̃^�[��", L"�^�[���I��", 0);
+		m_gameStateNum = eGameStateNum::changePlayer;
+		for (int i = 0; i < m_charactorCommandData[m_playerTurnNum].size(); i++) {
+			m_charactorCommandData[m_playerTurnNum][i].isAttacked = false;
+			m_charactorCommandData[m_playerTurnNum][i].isMoved = false;
+			m_charactorCommandData[m_playerTurnNum][i].isWaiting = false;
 		}
+		
+		m_playerTurnNum++;
+
+		if (m_playerTurnNum >= m_maxPlayerNum) {
+			m_playerTurnNum = 0;
+		}
+		m_gameStateNum = eGameStateNum::choicePlayer;
+		m_ptrUIMainCommand->GetChildContent(CommandContent::TurnEnd)->StateCommandActive();
 	}
 
 	void GameStage::OnPushB() {
