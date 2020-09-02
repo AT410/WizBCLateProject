@@ -83,6 +83,8 @@ namespace basecross {
 
 		void SettingAttackCostMap();
 
+		void WaitCharacter();
+
 		void ChangePlayerTurn();
 
 		void OnPushA() {};

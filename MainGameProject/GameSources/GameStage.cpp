@@ -229,6 +229,12 @@ namespace basecross {
 				Vec3(0.0f), Vec3(0.5f), 0, L"thumbnail.png");
 			AddGameObject<ObjectBase>(objData);
 
+	void GameStage::WaitCharacter() {
+		m_charactorCommandData[m_playerTurnNum][m_choiceCharactorID].isAttacked = true;
+		m_charactorCommandData[m_playerTurnNum][m_choiceCharactorID].isMoved = true;
+		m_charactorCommandData[m_playerTurnNum][m_choiceCharactorID].isWaiting = true;
+	}
+
 	void GameStage::ChangePlayerTurn() {
 		MessageBox(0, L"���̃v���C���[�̃^�[��", L"�^�[���I��", 0);
 		m_gameStateNum = eGameStateNum::changePlayer;
