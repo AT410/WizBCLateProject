@@ -70,6 +70,12 @@ namespace basecross {
 
 	void GameStage::OnUpdate() {
 
+	void GameStage::VisibleUIMainCommand(){
+		if (m_gameStateNum == eGameStateNum::choiceAction) {
+			if (!m_ptrUIMainCommand->GetDrawActive()) {
+				m_ptrUIMainCommand->SetActiveThis(true);
+			}
+		}
 	}
 
 	void GameStage::UpDateCameraPos(Vec2 at) {
@@ -78,6 +84,27 @@ namespace basecross {
 
 		m_ptrCamera->SetEye(setCameraEye);
 		m_ptrCamera->SetAt(setCameraAt);
+	}
+
+	void GameStage::CreateCharactor() {
+		for (int i = 0; i < m_charactorMapID.size(); i++) {
+			m_charactorObj.push_back(vector<shared_ptr<Character>>());
+			m_charactorData.push_back(vector<CharactorData>());
+			m_charactorCommandData.push_back(vector<CharactorCommandData>());
+			for (int j = 0; j < m_charactorMapID[i].size(); j++) {
+				vector<unsigned int> weaponID = { 0,2 };
+				CharactorData charaData = CharactorData(1, 1, 5, 1, 2, 5, 4, 3, weaponID);
+				CharactorCommandData charaComData = CharactorCommandData(false, false, false);
+				m_charactorData[i].push_back(charaData);
+				m_charactorCommandData[i].push_back(charaComData);
+
+				auto setPos = m_mapData[m_charactorMapID[i][j].y][m_charactorMapID[i][j].x].mapPos;
+				auto objData = ObjectData(
+					setPos,
+					Vec3(0.0f), Vec3(0.5f), 2, L"kaizoku_viking.png");
+				m_charactorObj[i].push_back(AddGameObject<Character>(objData));
+			}
+		}
 	}
 
 	void GameStage::ChangeGameStateNum(eGameStateNum gameState) {
@@ -313,6 +340,14 @@ namespace basecross {
 		m_charactorCommandData[m_playerTurnNum][m_choiceCharactorID].isAttacked = true;
 		m_charactorCommandData[m_playerTurnNum][m_choiceCharactorID].isMoved = true;
 		m_charactorCommandData[m_playerTurnNum][m_choiceCharactorID].isWaiting = true;
+	}
+
+	void GameStage::InvisibleActionRangeObj() {
+		for (int i = 0; i < m_canActionMapID.size(); i++) {
+			m_actionRangeObj[i]->SetDrawActive(false);
+		}
+
+		ResetCanActionMapID();
 	}
 
 	void GameStage::ChangePlayerTurn() {

@@ -59,7 +59,12 @@ namespace basecross {
 		unsigned int GetGameStateNum() { return m_gameStateNum; };
 		void SetChoiceMapID(MapID choiceID) { m_choiceMapID = choiceID; };
 
+		//����
+		void VisibleUIMainCommand();
+
 		void UpDateCameraPos(Vec2 at);
+
+		void CreateCharactor();
 
 		void ChangeGameStateNum(eGameStateNum gameState);
 
@@ -88,6 +93,8 @@ namespace basecross {
 		void SettingAttackCostMap();
 
 		void WaitCharacter();
+
+		void InvisibleActionRangeObj();
 
 		void ChangePlayerTurn();
 
