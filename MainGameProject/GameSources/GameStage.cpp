@@ -230,5 +230,14 @@ namespace basecross {
 			AddGameObject<ObjectBase>(objData);
 		}
 	}
+
+	void GameStage::OnPushB() {
+		if (m_gameStateNum == eGameStateNum::choiceEnemy || m_gameStateNum == eGameStateNum::choiceMap)
+		{
+			InvisibleActionRangeObj();
+			m_gameStateNum = eGameStateNum::choicePlayer;
+		}
+	}
+
 }
 //end basecross

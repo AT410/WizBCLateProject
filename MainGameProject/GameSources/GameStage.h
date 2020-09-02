@@ -83,6 +83,9 @@ namespace basecross {
 
 		void SettingAttackCostMap();
 
+		void OnPushA() {};
+
+		void OnPushB();
 	};
 
 
