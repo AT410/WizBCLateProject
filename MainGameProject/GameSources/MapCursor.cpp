@@ -100,7 +100,7 @@ namespace basecross {
 		}
 	}
 
-	void MapCursor::PushA() {
+	void MapCursor::OnPushA() {
 		if (GetTypeStage<GameStage>()->GetGameStateNum() == (int)eGameStateNum::choicePlayer) {
 			GetTypeStage<GameStage>()->SetChoiceMapID(m_choiceMapID);
 			GetTypeStage<GameStage>()->ConfirmationCharacter();
