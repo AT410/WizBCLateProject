@@ -288,15 +288,26 @@ namespace basecross {
 				}
 			}
 		}
-		auto moveCost = m_charactorData[m_playerTurnNum][m_choiceCharactorID].MoveRange;
-		CreateCanAcionMapID(moveCost);
-		m_gameStateNum = eGameStateNum::choiceEnemy;
+
+		m_choiceWeaponID = m_charactorData[m_playerTurnNum][m_choiceCharactorID].weaponID[setWeapon];
+		auto attackCost = m_weaponData[m_choiceWeaponID].AttackRange;
+		CreateCanAcionMapID(attackCost);
 
 		for (int i = 0; i < m_canActionMapID.size(); i++) {
 			auto objData = ObjectData(
-				Vec3(m_canActionMapID[i].mapPos.x, m_canActionMapID[i].mapPos.y, 0.0f),
-				Vec3(0.0f), Vec3(0.5f), 0, L"thumbnail.png");
-			AddGameObject<ObjectBase>(objData);
+				Vec3(m_mapData[m_canActionMapID[i].y][m_canActionMapID[i].x].mapPos.x, m_mapData[m_canActionMapID[i].y][m_canActionMapID[i].x].mapPos.y, 0.0f),
+				Vec3(0.0f), Vec3(0.5f), 2, L"tx_AttackRange.png");
+
+			auto trans = m_actionRangeObj[i]->GetComponent<Transform>();
+			trans->SetPosition(objData.position);
+			trans->SetScale(objData.scale);
+			trans->SetRotation(objData.rotation);
+			m_actionRangeObj[i]->DrawingImage(objData.texture);
+			m_actionRangeObj[i]->SetDrawActive(true);
+		}
+
+		m_gameStateNum = eGameStateNum::choiceEnemy;
+	}
 
 	void GameStage::WaitCharacter() {
 		m_charactorCommandData[m_playerTurnNum][m_choiceCharactorID].isAttacked = true;
