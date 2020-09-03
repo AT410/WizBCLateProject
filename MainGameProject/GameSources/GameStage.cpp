@@ -192,6 +192,7 @@ namespace basecross {
 				}
 
 				m_choiceEnemyID = playerNum;
+				m_choiceEnemyCharaID = i;
 				m_charactorCommandData[m_playerTurnNum][m_choiceCharactorID].isAttacked = true;
 
 				InvisibleActionRangeObj();
@@ -268,7 +269,8 @@ namespace basecross {
 		if (enemyData.HP <= 0) {
 			//やられたプレイヤーを非表示にする
 			enemyData.isDed = true;
-			m_charactorObj[m_choiceEnemyID][m_choiceCharactorID]->DestroyCharacter();
+			m_charactorObj[m_choiceEnemyID][m_choiceEnemyCharaID]->DestroyCharacter();
+			ResetMapState(m_choiceMapID);
 		}
 	}
 
