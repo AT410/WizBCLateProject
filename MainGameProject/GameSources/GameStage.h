@@ -31,8 +31,10 @@ namespace basecross {
 
 		vector<shared_ptr<ObjectBase>> m_actionRangeObj;
 		MapID m_choiceMapID;
+		MapID m_beforeMapID;
 		unsigned int m_choiceWeaponID;
 		int m_choiceEnemyID;
+		int m_choiceEnemyCharaID;
 
 		vector<unsigned int> m_orderOfAction;
 
@@ -64,12 +66,19 @@ namespace basecross {
 			m_mapData[mapID.y][mapID.x].nowMapCost =
 				m_mapData[mapID.y][mapID.x].defaultMapCost;};
 
+		void ResetMapState(MapID mapID) {
+			m_mapData[mapID.y][mapID.x].mapState =
+				m_mapData[mapID.y][mapID.x].defaultMapState;
+		};
+
 		int GetMaxPlayerNum() { return m_maxPlayerNum; };
 		void SetCharactorMapID(vector<vector<MapID>> mapID) { m_charactorMapID = mapID; };
 		MapID GetCharactorMapID(int playerID, int playerNum) { return m_charactorMapID[playerID][playerNum]; };
 		void SetGameStateNum(eGameStateNum set) { m_gameStateNum = set; };
 		unsigned int GetGameStateNum() { return m_gameStateNum; };
-		void SetChoiceMapID(MapID choiceID) { m_choiceMapID = choiceID; };
+		void SetChoiceMapID(MapID choiceID) { 
+			m_beforeMapID = m_choiceMapID;
+			m_choiceMapID = choiceID; };
 		void SetChoiceWeaponID(eWeaponID set) { m_choiceWeaponID = set; };
 
 

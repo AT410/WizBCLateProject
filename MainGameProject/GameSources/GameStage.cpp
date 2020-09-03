@@ -136,38 +136,64 @@ namespace basecross {
 
 		for (int i = 0; i < m_charactorMapID[m_playerTurnNum].size(); i++) {
 			if (m_charactorMapID[m_playerTurnNum][i].mapPos == m_choiceMapID.mapPos) {
-				if (m_charactorData[m_playerTurnNum][i].isDed == true) {
+				if (m_charactorData[m_playerTurnNum][i].isDed != true) {
+					m_choiceCharactorID = i;
+					//MessageBox(0, L"", L"", 0);
+
+					if (!m_charactorCommandData[m_playerTurnNum][i].isAttacked) {
+						m_ptrUIMainCommand->GetChildContent(CommandContent::Attack)->StateCommandActive();
+					}
+					if (!m_charactorCommandData[m_playerTurnNum][i].isMoved) {
+						m_ptrUIMainCommand->GetChildContent(CommandContent::Move)->StateCommandActive();
+					}
+					if (!m_charactorCommandData[m_playerTurnNum][i].isWaiting) {
+						m_ptrUIMainCommand->GetChildContent(CommandContent::Wait)->StateCommandActive();
+					}
 					return;
 				}
-
-				m_choiceCharactorID = i;
-				//MessageBox(0, L"", L"", 0);
-
-				if (!m_charactorCommandData[m_playerTurnNum][i].isAttacked) {
-					m_ptrUIMainCommand->GetChildContent(CommandContent::Attack)->StateCommandActive();
-				}
-				if (!m_charactorCommandData[m_playerTurnNum][i].isMoved) {
-					m_ptrUIMainCommand->GetChildContent(CommandContent::Move)->StateCommandActive();
-				}
-				if (!m_charactorCommandData[m_playerTurnNum][i].isWaiting) {
-					m_ptrUIMainCommand->GetChildContent(CommandContent::Wait)->StateCommandActive();
-				}
-				return;
 			}
 		}
 	}
 
 	void GameStage::ConfirmationMove() {
-		if (m_mapData[m_choiceMapID.y][m_choiceMapID.x].nowMapCost != eXMLMapStateNum::NotAvailable) {
-			for (int i = 0; i < m_canActionMapID.size(); i++) {
-				if (m_canActionMapID[i].mapPos == m_choiceMapID.mapPos) {
-					m_charactorMapID[m_playerTurnNum][m_choiceCharactorID] = m_choiceMapID;
-					m_charactorObj[m_playerTurnNum][m_choiceCharactorID]->MoveCharacter(m_mapData[m_choiceMapID.y][m_choiceMapID.x].mapPos);
-					InvisibleActionRangeObj();
-					m_charactorCommandData[m_playerTurnNum][m_choiceCharactorID].isMoved = true;
-					m_gameStateNum = eGameStateNum::choicePlayer;
-					return;
+		bool cheakState = m_mapData[m_choiceMapID.y][m_choiceMapID.x].mapState != eXMLMapStateNum::Forest &&
+			m_mapData[m_choiceMapID.y][m_choiceMapID.x].mapState != eXMLMapStateNum::Normal;
+		if (cheakState) {
+			return;
+		}
+
+		for (int i = 0; i < m_canActionMapID.size(); i++) {
+			if (m_canActionMapID[i].mapPos == m_choiceMapID.mapPos) {
+				m_charactorMapID[m_playerTurnNum][m_choiceCharactorID] = m_choiceMapID;
+				m_charactorObj[m_playerTurnNum][m_choiceCharactorID]->MoveCharacter(m_mapData[m_choiceMapID.y][m_choiceMapID.x].mapPos);
+				InvisibleActionRangeObj();
+				m_charactorCommandData[m_playerTurnNum][m_choiceCharactorID].isMoved = true;
+				m_gameStateNum = eGameStateNum::choicePlayer;
+
+				switch (m_playerTurnNum)
+				{
+				case ePlayerID::Player1:
+					m_mapData[m_choiceMapID.y][m_choiceMapID.x].mapState = eXMLMapStateNum::Player1Chara;
+					ResetMapState(m_beforeMapID);
+					break;
+				case ePlayerID::Player2:
+					m_mapData[m_choiceMapID.y][m_choiceMapID.x].mapState = eXMLMapStateNum::Player1Chara;
+					ResetMapState(m_beforeMapID);
+					break;
+				case ePlayerID::Player3:
+					m_mapData[m_choiceMapID.y][m_choiceMapID.x].mapState = eXMLMapStateNum::Player1Chara;
+					ResetMapState(m_beforeMapID);
+					break;
+				case ePlayerID::Player4:
+					m_mapData[m_choiceMapID.y][m_choiceMapID.x].mapState = eXMLMapStateNum::Player1Chara;
+					ResetMapState(m_beforeMapID);
+					break;
+
+				default:
+					break;
 				}
+
+				return;
 			}
 		}
 	}
