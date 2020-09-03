@@ -32,13 +32,14 @@ namespace structdata {
 	struct MapData
 	{
 		int mapState;
+		int defaultMapState;
 		Vec3 mapPos;
-		int defaultMapCost;
 		int nowMapCost;
+		int defaultMapCost;
 
 		MapData(){}
-		MapData(int mapState, Vec3 mapPos, int defaultMapCost, int nowMapCost):
-			mapState(mapState), mapPos(mapPos), defaultMapCost(defaultMapCost), nowMapCost(nowMapCost)
+		MapData(int defaultMapState, Vec3 mapPos, int defaultMapCost):
+			mapState(defaultMapState), defaultMapState(defaultMapState), mapPos(mapPos), nowMapCost(defaultMapCost), defaultMapCost(defaultMapCost)
 		{}
 	};
 
