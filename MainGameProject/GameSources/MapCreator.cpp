@@ -104,18 +104,17 @@ namespace basecross {
 			switch (index)
 			{
 			case (int)eXMLMapStateNum::Normal:
-				m_mapData[mapID.y][mapID.x] = MapData(index, mapPos, -1, -1);
+				m_mapData[mapID.y][mapID.x] = MapData(index, mapPos, -1);
 				break;
 
 			case (int)eXMLMapStateNum::Forest:
-				m_mapData[mapID.y][mapID.x] = MapData(index, mapPos, -2, -2);
+				m_mapData[mapID.y][mapID.x] = MapData(index, mapPos, -2);
 				break;
 
 			default:
 				break;
 			}
 		}
-		GetTypeStage<GameStage>()->SetMapData(m_mapData);
 	}
 
 	void MapCreator::SaveObjMapData(IXMLDOMNodeListPtr nodePtr) {
@@ -140,21 +139,26 @@ namespace basecross {
 			{
 			case (int)eXMLMapStateNum::Player1Chara:
 				m_charactorMapID[(int)ePlayerID::Player1].push_back(mapID);
+				m_mapData[mapID.y][mapID.x].mapState = eXMLMapStateNum::Player1Chara;
 				break;
 			case (int)eXMLMapStateNum::Player2Chara:
 				m_charactorMapID[(int)ePlayerID::Player2].push_back(mapID);
+				m_mapData[mapID.y][mapID.x].mapState = eXMLMapStateNum::Player2Chara;
 				break;
 			case (int)eXMLMapStateNum::Player3Chara:
 				m_charactorMapID[(int)ePlayerID::Player3].push_back(mapID);
+				m_mapData[mapID.y][mapID.x].mapState = eXMLMapStateNum::Player3Chara;
 				break;
 			case (int)eXMLMapStateNum::Player4Chara:
 				m_charactorMapID[(int)ePlayerID::Player4].push_back(mapID);
+				m_mapData[mapID.y][mapID.x].mapState = eXMLMapStateNum::Player4Chara;
 				break;
 			default:
 				break;
 			}			
 		}
 		GetTypeStage<GameStage>()->SetCharactorMapID(m_charactorMapID);
+		GetTypeStage<GameStage>()->SetMapData(m_mapData);
 	}
 
 	void MapCreator::CreateMapData(int maxLan){
@@ -177,7 +181,7 @@ namespace basecross {
 					Vec3(m_mapData[j][i].mapPos.x, m_mapData[j][i].mapPos.y, 0.0f),
 					Vec3(0.0f), Vec3(0.5f), 0, L"sand1.jpg");
 
-				switch (m_mapData[j][i].mapState)
+				switch (m_mapData[j][i].defaultMapState)
 				{
 				case (int)eXMLMapStateNum::Normal:
 					objData = ObjectData(
