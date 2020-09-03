@@ -35,5 +35,7 @@ namespace basecross {
 		void OnPushA();
 
 		void OnPushB() {};
+
+		MapID GetID() { return m_choiceMapID; }
 	};
 }

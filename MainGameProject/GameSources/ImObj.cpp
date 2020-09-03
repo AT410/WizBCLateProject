@@ -9,7 +9,7 @@ namespace basecross
 		m_selected = -1;
 		m_example = false;
 		m_objWindow = ImApp::GetApp()->AddImGuiObject<ShowObjGui>(u8"オブジェクトウィンドウ");
-		m_MapTipWindow = ImApp::GetApp()->AddImGuiObject<ShowObjGui>(u8"詳細ウィンドウ");
+		m_MapTipWindow = ImApp::GetApp()->AddImGuiObject<MapGui>(u8"詳細ウィンドウ");
 	}
 
 	void SystemGui::OnGUI()
@@ -50,6 +50,7 @@ namespace basecross
 			m_example = !m_example;
 			m_MapTipWindow->SetActiveDraw(m_example);
 			// -- 現在カーソルが合っているデータを取り出す --
+
 		}
 
 		// -- オブジェクト表示 --		
@@ -165,7 +166,63 @@ namespace basecross
 
 	void MapGui::OnGUI()
 	{
+		if (m_Acitive)
+		{
+			auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage(false);
+			if (stage)
+			{
+				auto gamestage = dynamic_pointer_cast<GameStage>(stage);
+				if (gamestage == nullptr)
+					return;
 
+				auto ptr = m_Controll.lock();
+				if (ptr == nullptr)
+				{
+					ptr = gamestage->GetSharedGameObject<MapCursor>(L"Cursor");
+				}
+
+				ImGui::Begin(m_windowName.c_str());
+				auto id = ptr->GetID();
+				auto mapdata = gamestage->GetMapData(id);
+
+				// -- マップデータ --
+				ImGui::Text(u8"標準マップコスト：\t%d", mapdata.defaultMapCost);
+				ImGui::Text(u8"現在のマップコスト:\t%d", mapdata.nowMapCost);
+
+				string statestr;
+				switch (mapdata.mapState)
+				{
+				case eXMLMapStateNum::Normal:
+					statestr = u8"NORMAL";
+					break;
+				case eXMLMapStateNum::Forest:
+					statestr = u8"FOREST";
+					break;
+				case eXMLMapStateNum::NotAvailable:
+					statestr = u8"NotAvailable";
+					break;
+				case eXMLMapStateNum::Player1Chara:
+					statestr = u8"Player1";
+					break;
+				case eXMLMapStateNum::Player2Chara:
+					statestr = u8"Player2";
+					break;
+				case eXMLMapStateNum::Player3Chara:
+					statestr = u8"Player3";
+					break;
+				case eXMLMapStateNum::Player4Chara:
+					statestr = u8"Player4";
+					break;
+				default:
+					statestr = u8"MissingState";
+					break;
+				}
+
+				string result = u8"マップステート:\t" + statestr;
+				ImGui::Text(result.c_str());
+				ImGui::End();
+			}
+		}
 	}
 }
 #endif // _BSImGui

@@ -23,6 +23,8 @@ namespace basecross {
 		m_mapData = GetTypeStage<GameStage>()->GetMapData();
 
 		m_cursorTrans->SetPosition(m_mapData[0][0].mapPos);
+
+		GetStage()->SetSharedGameObject(L"Cursor", GetThis<MapCursor>());
 	}
 
 	void MapCursor::OnUpdate() {

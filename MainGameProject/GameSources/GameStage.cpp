@@ -61,8 +61,6 @@ namespace basecross {
 			ImApp::GetApp()->AddImGuiObject<SystemGui>();
 #endif // _BSImGui
 
-			AddGameObject<MapCursor>(charaObjData);
-
 			CreateCharactor();
 
 			for (int i = 0; i < 50; i++) {

@@ -5,6 +5,7 @@
 namespace basecross
 {
 	class ShowObjGui;
+	class MapGui;
 
 	//----------------------------------------------------------------------------
 	//システム表示を行う
@@ -21,7 +22,7 @@ namespace basecross
 	private:
 		weak_ptr<Stage> m_stage;
 		shared_ptr<ShowObjGui> m_objWindow;
-		shared_ptr<ShowObjGui> m_MapTipWindow;
+		shared_ptr<MapGui> m_MapTipWindow;
 		int m_selected;
 
 		bool m_example;
@@ -57,12 +58,16 @@ namespace basecross
 	class MapGui:public ShowObjGui
 	{
 	public:
+		MapGui(const string& name)
+			:ShowObjGui(name)
+		{}
+
 		void OnInit()override;
 
 		void OnGUI()override;
 
 	private:
-
+		weak_ptr<MapCursor> m_Controll;
 	};
 }
 #endif // _BSImGui
