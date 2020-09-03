@@ -53,10 +53,10 @@ namespace basecross {
 	void UIAttackCommandCursor::OnUpdate() {
 		//auto parent = dynamic_pointer_cast<UIMainCommand>(GetComponent<Transform>()->GetParent());
 		//if (parent->GetSelectMainCommand())return;
+		// 入力
+		m_handler.PushHandle(GetThis<UIAttackCommandCursor>());
 		// カーソルの移動
 		MoveCursor();
-		OnPushA();
-		OnPushB();
 	}
 
 	// カーソルの移動
@@ -130,32 +130,22 @@ namespace basecross {
 	// Aボタン
 	void UIAttackCommandCursor::OnPushA()
 	{
-		// コントローラーの取得
-		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec()[0];
-		if (cntlVec.wPressedButtons & XINPUT_GAMEPAD_A)
-		{
-			auto parent = dynamic_pointer_cast<UIAttackCommand>(GetComponent<Transform>()->GetParent());
-			//parent->GetChildContent(m_count)->StateCommandPassive();
-			parent->SetSelectAttackCommand(true);
-			parent->SetSelectAttackContent((AttackCommandContent)m_count);
-		}
+		auto parent = dynamic_pointer_cast<UIAttackCommand>(GetComponent<Transform>()->GetParent());
+		//parent->GetChildContent(m_count)->StateCommandPassive();
+		parent->SetSelectAttackCommand(true);
+		parent->SetSelectAttackContent((AttackCommandContent)m_count);
 	}
 	// Bボタン
 	void UIAttackCommandCursor::OnPushB()
 	{
-		// コントローラーの取得
-		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec()[0];
-		if (cntlVec.wPressedButtons & XINPUT_GAMEPAD_B)
-		{
-			// ひとつ前のコマンド選択に戻る
-			auto mainCommand = dynamic_pointer_cast<UIMainCommand>(m_parentToMainCommand);
-			mainCommand->SetSelectMainCommand(false);
-			mainCommand->GetChildContent(mainCommand->GetSelectMainContent())->StateCommandActive();
-			mainCommand->GetChildCursor()->SetDrawActive(true);
-			mainCommand->GetChildCursor()->SetUpdateActive(true);
-			auto parent = dynamic_pointer_cast<UIAttackCommand>(m_parent);
-			parent->SetActiveThis(false);
-		}
+		// ひとつ前のコマンド選択に戻る
+		auto mainCommand = dynamic_pointer_cast<UIMainCommand>(m_parentToMainCommand);
+		mainCommand->SetSelectMainCommand(false);
+		mainCommand->GetChildContent(mainCommand->GetSelectMainContent())->StateCommandActive();
+		mainCommand->GetChildCursor()->SetDrawActive(true);
+		mainCommand->GetChildCursor()->SetUpdateActive(true);
+		auto parent = dynamic_pointer_cast<UIAttackCommand>(m_parent);
+		parent->SetActiveThis(false);
 
 	}
 

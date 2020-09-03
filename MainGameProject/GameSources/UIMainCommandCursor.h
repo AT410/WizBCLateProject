@@ -11,6 +11,9 @@ namespace basecross {
 		// 親オブジェクト
 		shared_ptr<GameObject> m_parent;
 
+		// 入力ハンドラー
+		InputHandler<UIMainCommandCursor> m_handler;
+
 		// カウント
 		int m_count = 0;
 		// 最大カウント(enumの最後の値が最大カウント)
@@ -25,10 +28,6 @@ namespace basecross {
 
 		// カーソルの移動
 		void MoveCursor();
-		// Aボタン
-		void OnPushA();
-		// Bボタン
-		void OnPushB();
 
 
 	public:
@@ -50,6 +49,10 @@ namespace basecross {
 		void InitPosition();
 		// 更新
 		virtual void OnUpdate() override;
+		// Aボタン
+		void OnPushA();
+		// Bボタン
+		void OnPushB();
 
 	};
 }

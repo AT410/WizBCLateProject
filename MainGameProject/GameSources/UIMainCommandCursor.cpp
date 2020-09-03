@@ -53,10 +53,10 @@ namespace basecross {
 	void UIMainCommandCursor::OnUpdate() {
 		//auto parent = dynamic_pointer_cast<UIMainCommand>(GetComponent<Transform>()->GetParent());
 		//if (parent->GetSelectMainCommand())return;
+		// 入力
+		m_handler.PushHandle(GetThis<UIMainCommandCursor>());
 		// カーソルの移動
 		MoveCursor();
-		OnPushA();
-		OnPushB();
 	}
 
 	// カーソルの移動
@@ -131,29 +131,19 @@ namespace basecross {
 	// Aボタン
 	void UIMainCommandCursor::OnPushA()
 	{
-		// コントローラーの取得
-		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec()[0];
-		if (cntlVec.wPressedButtons & XINPUT_GAMEPAD_A)
-		{
-			if (GetTypeStage<GameStage>()->GetGameStateNum() == eGameStateNum::choiceAction) {
-				auto parent = dynamic_pointer_cast<UIMainCommand>(GetComponent<Transform>()->GetParent());
-				parent->SetSelectMainCommand(true);
-				parent->SetSelectMainContent((CommandContent)m_count);
+		if (GetTypeStage<GameStage>()->GetGameStateNum() == eGameStateNum::choiceAction) {
+			auto parent = dynamic_pointer_cast<UIMainCommand>(GetComponent<Transform>()->GetParent());
+			parent->SetSelectMainCommand(true);
+			parent->SetSelectMainContent((CommandContent)m_count);
 
-			}
 		}
 	}
 	// Bボタン
 	void UIMainCommandCursor::OnPushB()
 	{
-		// コントローラーの取得
-		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec()[0];
-		if (cntlVec.wPressedButtons & XINPUT_GAMEPAD_B)
-		{
-			auto parent = dynamic_pointer_cast<UIMainCommand>(GetComponent<Transform>()->GetParent());
-			parent->SetActiveThis(false);
-			GetTypeStage<GameStage>()->SetGameStateNum(eGameStateNum::choicePlayer);
-		}
+		auto parent = dynamic_pointer_cast<UIMainCommand>(GetComponent<Transform>()->GetParent());
+		parent->SetActiveThis(false);
+		GetTypeStage<GameStage>()->SetGameStateNum(eGameStateNum::choicePlayer);
 	}
 
 	// クールタイム計算
