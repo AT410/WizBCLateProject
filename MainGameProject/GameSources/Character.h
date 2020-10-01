@@ -6,8 +6,15 @@
 #pragma once
 #include "stdafx.h"
 
+using namespace structdata;
+using namespace enumdata;
+
 namespace basecross{
 	class Character : public ObjectBase {
+		bool m_isDed;
+		unsigned int m_choiceWeaponID;
+		CharactorData m_charactorData;
+		CharactorCommandData m_charactorCommandData;
 
 	public:
 		Character(const shared_ptr<Stage>& stage,
@@ -18,9 +25,14 @@ namespace basecross{
 			wstring& Texture);
 
 		Character(const shared_ptr<Stage>& stage,
-			ObjectData& objectdata);
+			ObjectData& objectData, CharactorData& charactorData,
+			CharactorCommandData& charactorCommandData);
 
 		virtual void OnCreate() override;
+
+		unsigned int GetChoiceWeaponID() { return m_choiceWeaponID; };
+		void SetChoiceWeaponID(unsigned int set) { m_choiceWeaponID = set; };
+
 
 		void DestroyCharacter();
 

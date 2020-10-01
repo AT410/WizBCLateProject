@@ -17,8 +17,10 @@ namespace basecross{
 	{}
 
 	Character::Character(const shared_ptr<Stage>& stage,
-		ObjectData& objectdata):
-	ObjectBase(stage, objectdata)
+		ObjectData& objectData, CharactorData& charactorData,
+		CharactorCommandData& charactorCommandData):
+	ObjectBase(stage, objectData), m_charactorData(charactorData), 
+		m_charactorCommandData(charactorCommandData)
 	{} 
 
 	void Character::OnCreate() {
