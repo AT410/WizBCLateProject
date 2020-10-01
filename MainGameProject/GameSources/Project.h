@@ -20,6 +20,9 @@
 
 #include "Character.h"
 #include "Player.h"
+
+#include "ImageUI.h"
+
 #include "UIAttackCommandContent.h"
 #include "UIAttackCommandCursor.h"
 #include "UIAttackCommand.h"
@@ -27,6 +30,7 @@
 #include "UIMainCommandCursor.h"
 #include "UIMainCommand.h"
 
+#include "TitleStage.h"
 #include "GameStage.h"
 
 #ifdef _BSImGui
