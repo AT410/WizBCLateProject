@@ -76,14 +76,34 @@ namespace structdata {
 			isAttacked(isAttacked), isMoved(isMoved), isWaiting(isWaiting) {}
 	};
 
-	struct JobData
+	struct JobValueData
 	{
-		unsigned int baseMaxHP, basePow, baseDef, MoveRange;
+		unsigned int baseHP, basePow, baseDef, moveRange;
 
-		JobData() {}
-		JobData(int MaxHP, int Pow, int Def, int MoveRenge) :
-			baseMaxHP(MaxHP), basePow(Pow), baseDef(Def), MoveRange(MoveRenge)
+		JobValueData() {}
+		JobValueData(int HP, int Pow, int Def, int moveRenge) :
+			baseHP(HP), basePow(Pow), baseDef(Def), moveRange(moveRenge)
 		{}
+	};
+
+	struct CharactorValueData
+	{
+		unsigned int baseHP, basePow, baseDef, moveRange;
+
+		CharactorValueData() {}
+		CharactorValueData(int HP, int Pow, int Def) :
+			baseHP(HP), basePow(Pow), baseDef(Def)
+		{}
+	};
+
+	struct SavePlayerData
+	{
+		unsigned int jobID, Lv, Exp;
+		vector<unsigned int> weaponID;
+
+		SavePlayerData() {};
+		SavePlayerData(int jobID, int Lv, int Exp, vector<unsigned int> weaponID) :
+			jobID(jobID), Lv(Lv), Exp(Exp), weaponID(weaponID){}
 	};
 
 	struct WeaponData
