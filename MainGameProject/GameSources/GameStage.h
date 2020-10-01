@@ -5,6 +5,9 @@
 
 #pragma once
 #include "stdafx.h"
+#include <iostream>
+#include <fstream>
+
 using namespace structdata;
 using namespace enumdata;
 
@@ -21,13 +24,22 @@ namespace basecross {
 		vector<vector<MapID>> m_charactorMapID;
 		vector<MapID> m_canActionMapID;
 		vector<vector<shared_ptr<Character>>> m_charactorObj;
+
 		vector <vector<CharactorData>> m_charactorData;
+		vector <vector<JobValueData>> m_jobData;
+		vector <vector<CharactorValueData>> m_charactorValueData;
+
+		SavePlayerData m_savePlayerData;
+
 		vector<vector<CharactorCommandData>> m_charactorCommandData;
 		vector<WeaponData> m_weaponData = {
-			WeaponData(eWeaponID::normalSword,	3, 2, 1, eWeaponTag::Sword),
-			WeaponData(eWeaponID::normalSpear,	4, 0, 2, eWeaponTag::Spear),
-			WeaponData(eWeaponID::normalBow,	2, 0, 4, eWeaponTag::Bow),
+			WeaponData(eWeaponID::normalSword,	2, 2, 1, eWeaponTag::Sword),
+			WeaponData(eWeaponID::normalSpear,	3, 0, 2, eWeaponTag::Spear),
+			WeaponData(eWeaponID::normalBow,	2, 0, 3, eWeaponTag::Bow),
 		};
+
+		vector<JobValueData> m_jobValData = vector<JobValueData>();
+		vector<CharactorValueData> m_charaValData = vector<CharactorValueData>();
 
 		vector<shared_ptr<ObjectBase>> m_actionRangeObj;
 		MapID m_choiceMapID;
@@ -88,8 +100,23 @@ namespace basecross {
 		void UpDateCameraPos(Vec2 at);
 
 		void CreateCharactor();
+		//バイナリデータを読み込む
+		void ReadBinary(wstring fileName);
+
+		//バイナリデータの書き込み
+		void WriteBinary(wstring fileName);
+
+		void CreateCharactorData();
+
+		int CalculationHP(int jobHPVal, int charaHPVal, int charaLv);
+
+		int CalculationState(int jobStateVal, int charaStateVal, int charaLv);
+		
+		int CalculationMove(int jobMoveVal, int charaLv);
 
 		void ChangeGameStateNum(eGameStateNum gameState);
+
+		void OpenCommand();
 
 		void ConfirmationCharacter();
 		//移動できるか確認する
@@ -124,6 +151,8 @@ namespace basecross {
 		void OnPushA() {};
 
 		void OnPushB();
+
+		void OnPushStart() {};
 	};
 
 

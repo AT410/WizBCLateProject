@@ -47,7 +47,7 @@ namespace basecross {
 			//ビューとライトの作成
 			CreateViewLight();
 
-			auto charaObjData = structdata::ObjectData(Vec3(0.0f), Vec3(0.0f), Vec3(1.0f),1, L"tx_Cursor.png");
+			auto charaObjData = structdata::ObjectData(Vec3(0.0f), Vec3(0.0f), Vec3(1.0f),3, L"tx_Cursor.png");
 			auto uiData = structdata::UIData(Vec2(0.0f), Vec3(0.0f), Vec2(150.0f, 200.0f), Vec2(0.0f, 1.0f), 5, L"menu.png");
 
 			//描画の確認用に画像を生成
@@ -61,12 +61,15 @@ namespace basecross {
 			ImApp::GetApp()->AddImGuiObject<SystemGui>();
 #endif // _BSImGui
 
+			//WriteBinary(L"TestBin.bin");
+			ReadBinary(L"TestBin.bin");
+
 			CreateCharactor();
 
 			for (int i = 0; i < 50; i++) {
 				auto objData = ObjectData(
 					Vec3(0.0f),
-					Vec3(0.0f), Vec3(0.5f), 1, L"tx_MovingRange.png");
+					Vec3(0.0f), Vec3(1.0f), 1, L"tx_MovingRange.png");
 				m_actionRangeObj.push_back(AddGameObject<ObjectBase>(objData));
 				m_actionRangeObj[i]->SetDrawActive(false);
 			}
@@ -106,18 +109,29 @@ namespace basecross {
 			m_charactorObj.push_back(vector<shared_ptr<Character>>());
 			m_charactorData.push_back(vector<CharactorData>());
 			m_charactorCommandData.push_back(vector<CharactorCommandData>());
+
+			//キャラクターのステータスを決める
 			for (int j = 0; j < m_charactorMapID[i].size(); j++) {
-				vector<unsigned int> weaponID = { 0,2 };
-				CharactorData charaData = CharactorData(1, 1, 5, 1, 2, 5, 4, 3, weaponID);
+
+				vector<unsigned int> weaponID = m_savePlayerData.weaponID;
+				int lv = m_savePlayerData.Lv;
+				int jobID = m_savePlayerData.jobID;
+				int exp = m_savePlayerData.Exp;
+
+				CharactorData charaData = CharactorData(1, jobID, lv, exp,
+					CalculationHP(100,10, lv),
+					CalculationState(30,10, lv),
+					CalculationState(30, 10, lv),
+					CalculationMove(15, lv), weaponID);
+
 				CharactorCommandData charaComData = CharactorCommandData(false, false, false);
 				m_charactorData[i].push_back(charaData);
 				m_charactorCommandData[i].push_back(charaComData);
 
-				auto setPos = m_mapData[m_charactorMapID[i][j].y][m_charactorMapID[i][j].x].mapPos;
 				auto objData = ObjectData(
-					setPos,
-					Vec3(0.0f), Vec3(0.5f), 2, L"kaizoku_viking.png");
-				m_charactorObj[i].push_back(AddGameObject<Character>(objData));
+					m_mapData[m_charactorMapID[i][j].y][m_charactorMapID[i][j].x].mapPos,
+					Vec3(0.0f), Vec3(0.8f), 2, L"kaizoku_viking.png");
+				m_charactorObj[i].push_back(AddGameObject<Character>(objData, charaData, charaComData));
 			}
 		}
 	}
@@ -127,18 +141,140 @@ namespace basecross {
 
 	}
 
-	void GameStage::ConfirmationCharacter() {
-		//ChangeGameStateNum(eGameStateNum::choiceAction);
+	void GameStage::ReadBinary(wstring fileName) {
+		wstring data;
+		App::GetApp()->GetDataDirectory(data);
+
+		wstring filePath = data + L"GameData/" + fileName;
+		ifstream fin(filePath, ios::in | ios::binary);
+
+		if (!fin) {
+			MessageBox(0, L"ReadBinary() : バイナリファイルが読み込めません。", L"読み込み失敗", 0);
+			return;
+		}
+
+		int num;
+		vector<int> nums;
+
+		while (!fin.eof()) {
+			fin.read((char * )&num, sizeof(int));
+			nums.push_back(num);
+		}
+
+		auto a = nums.size() - 1;
+
+		//職業データを保存
+		if (a % 5 == 0) {
+			for (int i = 0; i < a; i += 5) {
+				JobValueData jobData;
+				CharactorValueData charaData;
+
+				m_savePlayerData.weaponID.resize(2);
+
+				m_savePlayerData.jobID = nums[i];
+				m_savePlayerData.Lv = nums[i + 1];
+				m_savePlayerData.Exp = nums[i + 2];
+				m_savePlayerData.weaponID[0] = nums[i + 3];
+				m_savePlayerData.weaponID[1] = nums[i + 4];
+
+
+				//jobData.baseHP = nums[i];
+				//jobData.basePow = nums[i + 1];
+				//jobData.baseDef = nums[i + 2];
+				//jobData.moveRange = nums[i + 3];
+				//m_jobValData.push_back(jobData);
+				//
+				//charaData.baseHP = nums[i + 4];
+				//charaData.basePow = nums[i + 5];
+				//charaData.baseDef = nums[i + 6];
+				//m_charaValData.push_back(charaData);
+
+			}
+		}
+
+		fin.close();
+	}
+
+	void GameStage::WriteBinary(wstring fileName) {
+		wstring data;
+		App::GetApp()->GetDataDirectory(data);
+
+		wstring filePath = data + L"GameData/" + fileName;
+
+		ofstream fout;
+		fout.open(filePath, ios::out|ios::binary|ios::trunc);
+
+		if (!fout) {
+			MessageBox(0, L"ReadBinary() : バイナリファイルが読み込めません。", L"読み込み失敗", 0);
+			return;
+		}
+
+		uint32 jobID, lv, exp;
+		vector<uint32> weaponID;
+
+		vector<uint32> num;
+
+		for (int i = 0; i < m_charactorData[0].size(); i++) {
+			num.push_back(m_charactorData[0][i].jobID);
+			num.push_back(m_charactorData[0][i].Lv);
+			num.push_back(m_charactorData[0][i].Exp);
+			num.push_back(m_charactorData[0][i].weaponID[0]);
+			num.push_back(m_charactorData[0][i].weaponID[1]);
+		}
+
+		for (int i = 0; i < num.size(); i++) {
+			fout.write((char*)&num[i], sizeof(uint32));
+		}
+		fout.close();
+	}
+
+	void GameStage::CreateCharactorData() {
+		vector<unsigned int> weaponID = { 0,2 };
+
+		auto jobID = 1;
+		auto charaID = 0;
+		auto charaLv = 1;
+		auto hp = CalculationHP(m_jobValData[jobID].baseHP, m_charaValData[charaID].baseHP, charaLv);
+		auto pow = CalculationState(m_jobValData[jobID].basePow, m_charaValData[charaID].basePow, charaLv);
+		auto def = CalculationState(m_jobValData[jobID].baseDef, m_charaValData[charaID].baseDef, charaLv);
+		auto move = CalculationMove(m_jobValData[jobID].moveRange, charaLv);
+
+		CharactorData charaData = CharactorData(charaID, jobID, charaLv, 1, hp, pow, def, move, weaponID);
+	}
+
+	int GameStage::CalculationHP(int jobHPVal, int charaHPVal, int charaLv) {
+		int hp = (jobHPVal * 2 + charaHPVal) * charaLv / 100 + 10 + charaLv;
+		return hp;
+	}
+
+	int GameStage::CalculationState(int jobStateVal, int charaStateVal, int charaLv) {
+		int state = (jobStateVal * 2 + charaStateVal) * charaLv / 100 + 5;
+		return state;
+	}
+
+	int GameStage::CalculationMove(int jobMoveVal, int charaLv) {
+		int move = jobMoveVal * charaLv / 100 + 3;
+		return move;
+	}
+
+	void GameStage::OpenCommand() {
 		m_gameStateNum = eGameStateNum::choiceAction;
 		m_ptrUIMainCommand->GetChildContent(CommandContent::Attack)->StateCommandPassive();
 		m_ptrUIMainCommand->GetChildContent(CommandContent::Move)->StateCommandPassive();
 		m_ptrUIMainCommand->GetChildContent(CommandContent::Wait)->StateCommandPassive();
+	}
 
+	void GameStage::ConfirmationCharacter() {
 		for (int i = 0; i < m_charactorMapID[m_playerTurnNum].size(); i++) {
 			if (m_charactorMapID[m_playerTurnNum][i].mapPos == m_choiceMapID.mapPos) {
 				if (m_charactorData[m_playerTurnNum][i].isDed != true) {
 					m_choiceCharactorID = i;
 					//MessageBox(0, L"", L"", 0);
+
+					m_gameStateNum = eGameStateNum::choiceAction;
+					m_ptrUIMainCommand->GetChildContent(CommandContent::Attack)->StateCommandPassive();
+					m_ptrUIMainCommand->GetChildContent(CommandContent::Move)->StateCommandPassive();
+					m_ptrUIMainCommand->GetChildContent(CommandContent::Wait)->StateCommandPassive();
 
 					if (!m_charactorCommandData[m_playerTurnNum][i].isAttacked) {
 						m_ptrUIMainCommand->GetChildContent(CommandContent::Attack)->StateCommandActive();
@@ -228,9 +364,6 @@ namespace basecross {
 			}
 		}
 	}
-
-	//HPを減らす処理
-	//void GameStage::
 
 	//ダメージ計算
 	void GameStage::DamageCalculation(CharactorData& enemyData) {
@@ -362,22 +495,14 @@ namespace basecross {
 	}
 
 	void GameStage::SettingMoveCostMap() {
-		for (int i = 0; i < m_charactorMapID.size(); i++) {
-			for (int j = 0; j < m_charactorMapID[i].size(); j++) {
-
-			}
-		}
-
 		auto moveCost = m_charactorData[m_playerTurnNum][m_choiceCharactorID].MoveRange;
-		//MessageBox(0, L"", L"", 0);
 		CreateCanAcionMapID(moveCost);
 		m_gameStateNum = eGameStateNum::choiceMap;
 
-		//MessageBox(0, L"", L"", 0);
 		for (int i = 0; i < m_canActionMapID.size(); i++) {
 			auto objData = ObjectData(
-				Vec3(m_mapData[m_canActionMapID[i].y][m_canActionMapID[i].x].mapPos.x, m_mapData[m_canActionMapID[i].y][m_canActionMapID[i].x].mapPos.y, 0.0f),
-				Vec3(0.0f), Vec3(0.5f), 2, L"tx_MovingRange.png");
+				Vec3(m_mapData[m_canActionMapID[i].y][m_canActionMapID[i].x].mapPos),
+				Vec3(0.0f), Vec3(0.9f), 1, L"tx_MovingRange.png");
 
 			auto trans = m_actionRangeObj[i]->GetComponent<Transform>();
 			trans->SetPosition(objData.position);
@@ -400,12 +525,13 @@ namespace basecross {
 
 		m_choiceWeaponID = m_charactorData[m_playerTurnNum][m_choiceCharactorID].weaponID[setWeapon];
 		auto attackCost = m_weaponData[m_choiceWeaponID].AttackRange;
+		m_charactorObj[m_playerTurnNum][m_choiceCharactorID]->SetChoiceWeaponID(m_choiceWeaponID);
 		CreateCanAcionMapID(attackCost);
 
 		for (int i = 0; i < m_canActionMapID.size(); i++) {
 			auto objData = ObjectData(
-				Vec3(m_mapData[m_canActionMapID[i].y][m_canActionMapID[i].x].mapPos.x, m_mapData[m_canActionMapID[i].y][m_canActionMapID[i].x].mapPos.y, 0.0f),
-				Vec3(0.0f), Vec3(0.5f), 2, L"tx_AttackRange.png");
+				Vec3(m_mapData[m_canActionMapID[i].y][m_canActionMapID[i].x].mapPos),
+				Vec3(0.0f), Vec3(0.9f), 1, L"tx_AttackRange.png");
 
 			auto trans = m_actionRangeObj[i]->GetComponent<Transform>();
 			trans->SetPosition(objData.position);
