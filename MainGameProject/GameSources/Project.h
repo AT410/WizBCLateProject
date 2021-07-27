@@ -7,6 +7,7 @@
 
 
 #include "ProjectShader.h"
+#include "ProjectDraw.h"
 #include "ProjectBehavior.h"
 #include "StructData.h"
 #include "EnumData.h"

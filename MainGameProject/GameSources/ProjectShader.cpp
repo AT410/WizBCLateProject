@@ -6,9 +6,10 @@
 #include "stdafx.h"
 #include "Project.h"
 
-namespace basecross{
+namespace basecross
+{
 
-
+	IMPLEMENT_DX11_CONSTANT_BUFFER(GBuffer);
 }
 //end basecross
 

@@ -46,6 +46,9 @@
     <Filter Include="ImGui">
       <UniqueIdentifier>{e75a939d-cab6-4286-8e29-5e57148f74e2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{ac21f4b2-f381-455f-9b14-64375b6caacc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Project.h">
@@ -108,6 +111,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ImObj.h">
       <Filter>ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ProjectDraw.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)ProjectShader.cpp">
@@ -164,5 +170,21 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ImObj.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ProjectDraw.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)GameShadeHeader.hlsli">
+      <Filter>Shader</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="$(MSBuildThisFileDirectory)MapTipVS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)MapTipPS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
